@@ -1,14 +1,17 @@
 import mysql.connector
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 class DbService(object):
-    def __init__(self, host, user, password):
-        self.__host = host
-        self.__user = user
-        self.__password = password
+    def __init__(self):
+        self.__host__ = os.getenv('DB_HOST')
+        self.__user__ = os.getenv('DB_USER')
+        self.__password__ = os.getenv('DB_PASSWORD')
 
     def __open__(self):
         try:
-            self.__connect = mysql.connector.connect(host = self.__host, user= self.__user, password= self.__password, pool_name = 'mypool', pool_size = 30)
+            self.__connect = mysql.connector.connect(host = self.__host__, user= self.__user__, password= self.__password__, pool_name = 'mypool', pool_size = 30)
             self.__cursor = self.__connect.cursor()
         except mysql.connector.Error as e:
             # Todo 測試

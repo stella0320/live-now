@@ -17,7 +17,7 @@ def queryConcertTimeDataByTimePeriod():
     startDate = request.args.get('startDate')
     endDate = request.args.get('endDate')
 
-    db_connect = DbService('localhost', 'root', 'root')
+    db_connect = DbService()
     data = db_connect.query_concert_time_table(startDate, endDate)
     return {
         'data': data
