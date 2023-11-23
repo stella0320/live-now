@@ -1,27 +1,25 @@
 from flask import *
 import time
-from service.dbService import DbService
+from script.route.concert_info_route import concert_info_route
+# from script.service.dbService import DbService
 from flask import request
 
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
 
+app.register_blueprint(concert_info_route)
+
+
 @app.route('/')
 def index():
     return render_template('index.html', time=time.time())
 
 
-@app.route('/api/calendar/queryConcertTimeDataByTimePeriod')
-def queryConcertTimeDataByTimePeriod():
-    startDate = request.args.get('startDate')
-    endDate = request.args.get('endDate')
+@app.route('/concert/<id>')
+def concert(id):
 
-    db_connect = DbService()
-    data = db_connect.query_concert_time_table(startDate, endDate)
-    return {
-        'data': data
-    }
+    return render_template('concert.html', time=time.time(), id=id)
 
 
 if __name__ == "__main__":

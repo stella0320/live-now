@@ -1,0 +1,71 @@
+
+.concert-info-cover {
+    display: flex;
+    flex: none;
+    width: calc(100%);
+    height: 450px;
+    flex-direction: column;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    /* border-bottom: 1px solid; */
+    /* border-image: linear-gradient(to top, rgba(0, 0, 0, 0.418), #ffffff) 1; */
+}
+
+.concert-info-cover-bg {
+    display: flex;
+    flex: none;
+    width: 100%;
+    height: 100%;
+}
+
+.concert-info-cover-bg-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    object-position: 50% 50%;
+    filter: blur(6px);  /* 毛玻璃效果 */
+    opacity: 0.8;  /* 透明度 */
+    
+}
+
+.concert-info-cover-main {
+    display: flex;
+    width: 80%;
+    height: 70%;
+    position: absolute;
+    transform: translateY(-5%); 
+
+}
+
+.concert-info-cover-main-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    object-position: 50% 50%;
+    border-radius: 2px;
+}
+
+.concert-info-cover-title {
+    display: flex;
+    flex: none;
+    width: 80%;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    top: 85%;
+}
+
+.concert-info-cover-title-text {
+    display: flex;
+    color: var(--secondary-color-gray-10, #F8F8F8);
+    /* Text Shadow */
+    text-shadow: 0px 0px 30px #ABC;
+
+    /* Header 1 - Bold 28(24) */
+    font-family: Noto Sans TC;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 700;
+}

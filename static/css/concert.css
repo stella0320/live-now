@@ -1,0 +1,4 @@
+.concert-info-container {
+    display: flex;
+    flex-direction: column;
+}
