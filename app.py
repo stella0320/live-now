@@ -16,9 +16,18 @@ def index():
     return render_template('index.html', time=time.time())
 
 
+@app.route('/calendar')
+def calandar():
+    return render_template('calendar.html')
+
+
+@app.route('/myArtist')
+def myArtist():
+    return render_template('my-artist.html')
+
+
 @app.route('/concert/<id>')
 def concert(id):
-
     return render_template('concert.html', time=time.time(), id=id)
 
 

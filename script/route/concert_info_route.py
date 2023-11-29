@@ -24,9 +24,18 @@ def query_concert_info(hash_id):
 def queryConcertTimeDataByTimePeriod():
     startDate = request.args.get('startDate')
     endDate = request.args.get('endDate')
-
     db_connect = DbService()
     data = db_connect.query_concert_time_table(startDate, endDate)
+
+    if data:
+        for item in data:
+            hash_id_service = HashIdService()
+            concert_info_id = item.get('concert_info_id')
+            if concert_info_id:
+                concert_info_hash_id = hash_id_service.encode_id(
+                    int(concert_info_id))
+                item['concert_info_id'] = concert_info_hash_id
+
     return {
         'data': data
     }

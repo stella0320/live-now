@@ -5,6 +5,8 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="/static/css/modal.css?cache={{time}}"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/loading.css?cache={{time}}"/>
     <link rel="stylesheet" type="text/css" href="/static/css/header.css?cache={{time}}"/>
     <link rel="stylesheet" type="text/css" href="/static/css/calendar.css?cache={{time}}"/>
     <link rel="stylesheet" type="text/css" href="/static/css/calendar-item.css?cache={{time}}"/>
@@ -12,7 +14,7 @@
     <title>Live Now!</title>
   </head>
 <body>
-
+  {% include 'modal.html' %}
   <div>
     <!-- header start-->
     <div>
@@ -23,14 +25,17 @@
       {% include 'calendar-item.html' %}
     </div>
     
-    <div>
-      {% include 'calendar.html' %}
+    <div id="content">
+     
     </div>
     <div>footer</div>
 
 
   </div>
 </body>
+<script src='/static/js/third-party/fullcalendar/index.global.js'></script>
+<script src="/static/js/modal.js?cache={{time}}"></script>
+<script src="/static/js/index.js?cache={{time}}"></script>
+<script src="/static/js/header.js?cache={{time}}"></script>
 <script src="/static/js/calendar.js?cache={{time}}"></script>
-<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js?cache={{time}}'></script>
 </html>

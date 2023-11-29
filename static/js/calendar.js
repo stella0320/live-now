@@ -2,21 +2,19 @@ let handleConcertTime = async function(response) {
     if (response.status == 200) {
         let result = await response.json();
         data = result['data']
-        removeCalendarEvent(data);
+        removeCalendarEvent();
         return data
     } else {
         return null
     }
 }
 
-let removeCalendarEvent = async function(data) {
-    if (data) {
-        for (let i=0; i < data.length; i++) {
-            let concert_time_table_id = data[i]['concert_time_table_id'];
-            let calendarEvent  = calendar.getEventById(concert_time_table_id);
-            if (calendarEvent) {
-                calendarEvent.remove();
-            }
+let removeCalendarEvent = async function() {
+    let events = calendar.getEvents();
+    if (events) {
+        for (let i=0; i < events.length; i++) {
+            let event  = events[i]
+            event.remove();
         }
     }
 }
@@ -45,15 +43,20 @@ let refreshCalendarEvent = function(data) {
         }
     }
 }
-function queryConcertTimeDataByTimePeriod(calendar, startDate, endDate) {
+async function queryConcertTimeDataByTimePeriod(calendar, startDate, endDate) {
+    changeModalBlackBackgroudDisplay('block');
+    changeModalLoadingDisplay('block');
     fetch('../api/calendar/queryConcertTimeDataByTimePeriod?startDate=' + startDate + "&endDate=" + endDate)
     .then(handleConcertTime)
     .then((data) => {
-        // console.log(data)
         refreshCalendarEvent(data)
     })
     .catch((err) => {
         console.log(err);
+    })
+    .finally(() => {
+        changeModalBlackBackgroudDisplay('none');
+        changeModalLoadingDisplay('none');
     });
 }
 
@@ -129,10 +132,9 @@ function createItemInlistWeek(arg) {
 }
 let calendar;
 
-
-
-document.addEventListener('DOMContentLoaded', function() {
+let initFullCalendar = function() {
     var calendarEl = document.getElementById('calendar');
+    console.log(calendarEl);
     calendar = new FullCalendar.Calendar(calendarEl, {
         schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
         initialView: 'listWeek',
@@ -201,9 +203,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // https://stackoverflow.com/questions/72710251/click-date-event-can-see-all-the-events-on-that-particular-date-using-angular
     })
     
-    
-    
-
     // https://fullcalendar.io/docs/datesSet
     calendar.on('datesSet', function(dateInfo) {
         // console.log('datesSet: ');
@@ -226,14 +225,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
     calendar.on('eventClick', function(info) {
         // https://fullcalendar.io/docs/eventMouseEnter
-        console.log('Event: ' + info.event.id)
+        // console.log('Event: ' + info.event.id);
+        console.log('Event: ' + info.event.groupId);
+        changeModalBlackBackgroudDisplay('block');
+        changeModalLoadingDisplay('block');
+        queryConcertInfoByHashId(info.event.groupId);
+        
     })
     calendar.addEventSource({
         'backgroundColor': 'background-color: rgba(247, 119, 6 ,0.2);',
     })
     calendar.render();
+}
+
+async function queryConcertInfoByHashId(hashId) {
     
-  
-   
-    
-});
+    fetch('/api/concert_info/' + hashId)
+    .then(async (response) => {
+        if (response.status == 200) {
+            // 跳到結帳頁面
+            let result = await response.json();
+            let data = result['data'][0]
+            fillUpModalContent(data['concert_info_name']);
+            
+        }
+    }).then(() => {
+        changeModalLoadingDisplay('none');
+        openModal('1200px');
+    });
+}
