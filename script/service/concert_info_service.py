@@ -42,7 +42,7 @@ class ConcertInfoService(object):
         if result and len(result) > 0:
             list = [dict(zip(self.__cursor.column_names, row))
                     for row in result]
-            return list
+            return list[0]
 
         return None
 

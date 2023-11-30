@@ -63,12 +63,14 @@ async function openModal(modalWidth) {
     
 }
 
-function fillUpModalContent(innerHTML) {
+function fillUpModalContent(contentElements) {
     let modalContent = document.getElementById('modalContent');
     if (modalContent) {
-        // content = document.createTextNode('123<br>12<br>12<br>12<br>12<br>');
-        // modalContent.appendChild(content);
-        modalContent.innerHTML = innerHTML
+        // 將modale content的卷軸重置到頂端
+        modalContent.scrollTop = 0;
+       // 將modale content清空
+        modalContent.innerHTML = null;
+        modalContent.appendChild(contentElements);
     }
 }
 

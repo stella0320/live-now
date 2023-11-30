@@ -245,8 +245,10 @@ async function queryConcertInfoByHashId(hashId) {
         if (response.status == 200) {
             // 跳到結帳頁面
             let result = await response.json();
-            let data = result['data'][0]
-            fillUpModalContent(data['concert_info_name']);
+            let data = result['data']
+            console.log(data);
+            let concertInfoElements = generateConcertInfoElements(data);
+            fillUpModalContent(concertInfoElements);
             
         }
     }).then(() => {

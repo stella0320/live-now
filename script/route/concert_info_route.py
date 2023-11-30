@@ -12,12 +12,22 @@ def query_concert_info(hash_id):
     hash_id_service = HashIdService()
     id = hash_id_service.decode_id(hash_id)[0]
     concert_info_service = ConcertInfoService()
-    concert_info_list = concert_info_service.query_concert_info_by_id(id)
+    concert_info = concert_info_service.query_concert_info_by_id(id)
 
-    # for concert_info in concert_info_list:
-    # ConcertTimeTableService()
+    concert_info_id = concert_info['concert_info_id']
+    sell_ticket_service = ConcertTimeTableService()
+    sell_ticket_time_list = sell_ticket_service.query_concert_time_table_by_id_and_type(
+        concert_info_id, '售票時間')
+    concert_info['sell_ticket_time_list'] = sell_ticket_time_list
 
-    return jsonify({'data': concert_info_list})
+    concert_time_service = ConcertTimeTableService()
+    concert_time_list = concert_time_service.query_concert_time_table_by_id_and_type(
+        concert_info_id, '演出時間')
+    concert_info['concert_time_list'] = concert_time_list
+
+    # query_concert_time_table_by_id_and_type
+
+    return jsonify({'data': concert_info})
 
 
 @concert_info_route.route('/api/calendar/queryConcertTimeDataByTimePeriod')
