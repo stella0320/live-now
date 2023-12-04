@@ -17,14 +17,14 @@ app.register_blueprint(line_api_route)
 @app.route('/')
 def index():
     code = request.args.get("code", "")
-
+    response = None
     if code:
         print("code:" + code)
         line_login_api_service = LineLoginApiService()
         response = line_login_api_service.getAccessToken(code)
         print(response)
 
-    return render_template('index.html', time=time.time())
+    return render_template('index.html', time=time.time(), code=code, line_api_response=json.dumps(response))
 
 
 @app.route('/login')
