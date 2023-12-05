@@ -2,7 +2,7 @@ from flask import *
 import time
 from script.route.concert_info_route import concert_info_route
 from script.route.line_api_route import line_api_route
-from script.service.line_login_api_service import LineLoginApiService
+from script.api.line_login_api import LineLoginApi
 from flask import request
 
 
@@ -21,7 +21,7 @@ def index():
     response = None
     if code:
         print("code:" + code)
-        line_login_api_service = LineLoginApiService()
+        line_login_api_service = LineLoginApi()
         response = line_login_api_service.search_user_profile_by_code(code)
 
     return render_template('index.html', time=time.time(), code=code, line_api_response=json.dumps(response))

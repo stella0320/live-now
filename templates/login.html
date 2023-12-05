@@ -3,18 +3,13 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <meta charset="utf-8" />
-        <style>
-
-            .line-login-button {
-                background-color: #06C755;
-                width: 80px;
-                height: 30px;
-            }
-        </style>
+        <meta name="google-signin-client_id" content="342638350102-cde2d515jvn80bo5m4j8u411fctjhh7n.apps.googleusercontent.com" />
+        <link rel="stylesheet" type="text/css" href="/static/css/login.css?cache={{time}}"/>
     </head>
     <body>
         <button class="line-login-button" id="lineLoginBtn">Line Login</button>
-
+        <div class="g-signin2" id="googleLoginBtn" data-onsuccess="onSignIn"></div>
     </body>
     <script src="/static/js/login.js?cache={{time}}"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
 </html>
