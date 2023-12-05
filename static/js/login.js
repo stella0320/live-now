@@ -7,15 +7,27 @@ function initLineLoginBtn() {
     });
 }
 
-function initGoogleLoginBtn() {
-    document.getElementById('googleLoginBtn').addEventListener('click', function(googleUser) {
-        var profile = googleUser.getBasicProfile();
-        console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-        console.log('Name: ' + profile.getName());
-        console.log('Image URL: ' + profile.getImageUrl());
-        console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-    });
-}
+// function initGoogleLoginBtn() {
+//     document.getElementById('googleLoginBtn').addEventListener('click', function(googleUser) {
+//         var profile = googleUser.getBasicProfile();
+//         console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+//         console.log('Name: ' + profile.getName());
+//         console.log('Image URL: ' + profile.getImageUrl());
+//         console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+//     });
+// }
 
+
+window.onload = function () {
+    google.accounts.id.initialize({
+      client_id: '342638350102-cde2d515jvn80bo5m4j8u411fctjhh7n.apps.googleusercontent.com',
+      login_uri: 'https://live-now.jc-chen.online/',
+      callback: function(CredentialResponse) {
+            let credential = CredentialResponse.credential
+            console.log(credential);
+      }
+    });
+    google.accounts.id.prompt();
+};
 
 initLineLoginBtn();

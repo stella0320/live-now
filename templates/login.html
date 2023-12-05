@@ -3,13 +3,30 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <meta charset="utf-8" />
-        <meta name="google-signin-client_id" content="342638350102-cde2d515jvn80bo5m4j8u411fctjhh7n.apps.googleusercontent.com" />
+        <meta name="referrer" content="no-referrer-when-downgrade">
         <link rel="stylesheet" type="text/css" href="/static/css/login.css?cache={{time}}"/>
     </head>
     <body>
         <button class="line-login-button" id="lineLoginBtn">Line Login</button>
-        <div class="g-signin2" id="googleLoginBtn" data-onsuccess="onSignIn"></div>
+        <div id="g_id_onload"
+            data-client_id="342638350102-cde2d515jvn80bo5m4j8u411fctjhh7n.apps.googleusercontent.com"
+            data-context="signin"
+            data-ux_mode="redirect"
+            data-login_uri="https://live-now.jc-chen.online/"
+            data-auto_prompt="false">
+        </div>
+
+        <div class="g_id_signin"
+            data-type="standard"
+            data-shape="pill"
+            data-theme="outline"
+            data-text="signin_with"
+            data-size="medium"
+            date-width="100px"
+            data-logo_alignment="left">
+        </div>
     </body>
+    <script src="https://accounts.google.com/gsi/client" async></script>
     <script src="/static/js/login.js?cache={{time}}"></script>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
+   
 </html>
