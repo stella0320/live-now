@@ -2,7 +2,7 @@ from flask import *
 import requests
 from ..service.concert_info_service import ConcertInfoService
 from ..service.concert_time_table_service import ConcertTimeTableService
-from ..service.hash_id_service import HashIdService
+from ..util.hash_id_service import HashIdService
 from ..service.dbService import DbService
 concert_info_route = Blueprint("concert_info_route", __name__)
 

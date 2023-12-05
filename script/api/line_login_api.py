@@ -9,7 +9,7 @@ import urllib.parse as parse
 load_dotenv()
 
 
-class LineLoginApiService(object):
+class LineLoginApi(object):
 
     def __init__(self):
         self.__login_channel_id__ = os.getenv('LINE_LOGIN_CHANNEL_ID')
