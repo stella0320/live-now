@@ -4,6 +4,9 @@ from script.route.concert_info_route import concert_info_route
 from script.route.line_api_route import line_api_route
 from script.api.line_login_api import LineLoginApi
 from flask import request
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 
 app = Flask(__name__)
@@ -30,7 +33,8 @@ def index():
 
 @app.route('/login')
 def login():
-    return render_template('login.html', time=time.time())
+    google_login_client_id = os.getenv('GOOGLE_LOGIN_CLIENT_ID')
+    return render_template('login.html', time=time.time(), google_login_client_id=google_login_client_id)
 
 
 @app.route('/calendar')
