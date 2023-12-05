@@ -17,12 +17,12 @@ app.register_blueprint(line_api_route)
 @app.route('/')
 def index():
     code = request.args.get("code", "")
+    # 如果line登入發生錯誤error 要特別導到另一個畫面
     response = None
     if code:
         print("code:" + code)
         line_login_api_service = LineLoginApiService()
-        response = line_login_api_service.getAccessToken(code)
-        print(response)
+        response = line_login_api_service.search_user_profile_by_code(code)
 
     return render_template('index.html', time=time.time(), code=code, line_api_response=json.dumps(response))
 
