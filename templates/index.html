@@ -5,6 +5,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta charset="utf-8" />
+    <meta name="referrer" content="no-referrer-when-downgrade">
     <link rel="stylesheet" type="text/css" href="/static/css/modal.css?cache={{time}}"/>
     <link rel="stylesheet" type="text/css" href="/static/css/loading.css?cache={{time}}"/>
     <link rel="stylesheet" type="text/css" href="/static/css/header.css?cache={{time}}"/>
@@ -19,7 +20,6 @@
 <body>
 
   {{code}}
-  {{line_api_response}}
   {% include 'modal.html' %}
   <div>
     <!-- header start-->

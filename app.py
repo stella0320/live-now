@@ -3,6 +3,7 @@ import time
 from script.route.concert_info_route import concert_info_route
 from script.route.line_api_route import line_api_route
 from script.api.line_login_api import LineLoginApi
+from script.api.google_login_api import GoogleLoginApi
 from flask import request
 import os
 from dotenv import load_dotenv
@@ -19,6 +20,8 @@ app.register_blueprint(line_api_route)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+
+    #### Line#####
     code = request.args.get("code", "")
     # 如果line登入發生錯誤error 要特別導到另一個畫面
     response = None
@@ -26,9 +29,36 @@ def index():
         print("code:" + code)
         line_login_api_service = LineLoginApi()
         response = line_login_api_service.search_user_profile_by_code(code)
-        return render_template('index.html', time=time.time(), code=code, line_api_response=json.dumps(response))
 
-    return render_template('index.html', time=time.time(), code='google login success')
+        if response['status'] == 200:
+            return render_template('index.html', time=time.time(), code=code)
+
+        else:
+            return render_template('error.html', error_msg=response['data'])
+
+    #### Google#####
+    credential = request.form.get("credential", "")
+    user_id = None
+    if credential:
+        google_login_api = GoogleLoginApi()
+
+        csrf_token_cookie = request.cookies.get('g_csrf_token')
+        csrf_token_body = request.form.get('g_csrf_token')
+
+        error_msg = google_login_api.check_csrf_token(
+            csrf_token_cookie, csrf_token_body)
+
+        if error_msg:
+            return render_template('error.html', error_msg=error_msg)
+
+        user_info = google_login_api.search_user_info(credential)
+        if not user_info:
+            return render_template('error.html', error_msg='credential is invalid')
+        return render_template('index.html', time=time.time(), code=user_info.get('google_account_id'))
+
+    # 身分驗證
+
+    return render_template('index.html', time=time.time(), code="null")
 
 
 @app.route('/login')

@@ -18,41 +18,46 @@ class LineLoginApi(object):
 
     def search_user_profile_by_code(self, code):
         access_token_object = self.search_access_token(code)
-        if access_token_object:
-
+        if access_token_object and access_token_object['status'] == 200:
+            access_token = access_token_object['data']['access_token']
             url = 'https://api.line.me/v2/profile'
             header = {
-                'Authorization': 'Bearer ' + access_token_object.get('access_token')
+                'Authorization': 'Bearer ' + access_token
             }
 
             response = requests.get(url, headers=header)
-            state_code = response.status_code
-            if state_code == 200:
-                return response.json()
+            status_code = response.status_code
 
-        return None
+            return {
+                'status': status_code,
+                'data': response.json()
+            }
+
+        return access_token_object
 
     def search_user_info_by_code(self, code):
         access_token_object = self.search_access_token(code)
 
-        if access_token_object:
+        if access_token_object and access_token_object['status'] == 200:
+            id_token = access_token_object['data']['id_token']
             url = 'https://api.line.me/oauth2/v2.1/verify'
             headers = {
                 'alg': 'HS256',
                 'type': 'JWT'
             }
             para = {
-                'id_token': access_token_object.get('id_token'),
+                'id_token': id_token,
                 'client_id': self.__login_channel_id__
             }
             encode_para = parse.urlencode(para)
             response = requests.post(url, data=encode_para, headers=headers)
             status_code = response.status_code
-            if status_code == 200:
-                data = response.json()
-                return data
+            return {
+                'status': status_code,
+                'data': response.json()
+            }
 
-        return None
+        return access_token_object
 
     def search_access_token(self, code):
         url = 'https://api.line.me/oauth2/v2.1/token'
@@ -68,8 +73,9 @@ class LineLoginApi(object):
         headers = {'Content-Type': 'application/x-www-form-urlencoded'}
         response = requests.post(url, data=encode_para, headers=headers)
         status_code = response.status_code
-        if status_code == 200:
-            data = response.json()
-            return data
+        data = response.json()
 
-        return None
+        return {
+            'status': status_code,
+            'data': data
+        }
