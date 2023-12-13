@@ -25,6 +25,14 @@ function searchUserInfo(memberToken) {
             const responseData = await response.json()
             const userInfo = responseData['data']
             console.log(userInfo)
+            if (userInfo) {
+                const loginUserDiv = document.getElementById('loginUser')
+                loginUserDiv.style.display = 'flex';
+                const picUrl = userInfo['profile_pic_url'];
+                if (picUrl) {
+                    loginUserDiv.style.backgroundImage = 'url(' + picUrl + ')';
+                }
+            }
         }
     })
 }

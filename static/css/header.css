@@ -77,28 +77,6 @@ body, html {
     padding: 10px;
 }
 
-.header-function-login {
-    display: flex;
-    flex: none;
-    width: 100px;
-    /* 需要置中 */
-    /* background-color: aquamarine; */
-    justify-self: center;
-    align-items: center;
-}
-
-.header-function-login-btn {
-    display: flex;
-    flex: none;
-    width: 78px;
-    height: 20px;
-    border: 2px solid black;
-    border-radius: 5px;
-    justify-content: center;
-    align-items: center;
-   
-}
-
 .header-function-logout {
     flex: none;
     width: 50px;
@@ -111,4 +89,24 @@ body, html {
     margin: 0 10px;
 }
 
-  
+
+.header-function-login-user {
+    display: none;
+    flex: none;
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    border: 2px solid gray;
+    background-size: 60px;
+    background-color: #bbb;
+    /* background-image:url('https://lh3.googleusercontent.com/a/ACg8ocKejMnMOl0F-0afMqu8j-rhcz5fWEUxafHy6iYb-wYIrw0=s96-c') */
+}
+
+
+.header-function-login-user:hover {
+    border: 2px solid rgb(255, 153, 51);
+}
+
+.header-function-login-user:active {
+    border: 2px solid rgb(216, 129, 42);
+}
