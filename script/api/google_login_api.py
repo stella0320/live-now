@@ -41,7 +41,6 @@ class GoogleLoginApi():
                     'google_email': idinfo['email'],
                     'google_token': credential
                 }
-            print(idinfo)
 
             # 驗證credential : https://developers.google.com/identity/gsi/web/guides/verify-google-id-token?hl=zh-tw
 

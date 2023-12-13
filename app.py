@@ -1,9 +1,11 @@
 from flask import *
 import time
+from script.db_service.members_service import MembersService
 from script.route.concert_info_route import concert_info_route
 from script.route.line_api_route import line_api_route
 from script.api.line_login_api import LineLoginApi
 from script.api.google_login_api import GoogleLoginApi
+from script.handler.login_handler import LoginHandler
 from flask import request
 import os
 from dotenv import load_dotenv
@@ -12,6 +14,7 @@ load_dotenv()
 
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
+app.config["JSON_AS_ASCII"] = False
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
 
 app.register_blueprint(concert_info_route)
@@ -20,7 +23,7 @@ app.register_blueprint(line_api_route)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-
+    member_token = None
     #### Line#####
     code = request.args.get("code", "")
     # 如果line登入發生錯誤error 要特別導到另一個畫面
@@ -31,7 +34,11 @@ def index():
         response = line_login_api_service.search_user_profile_by_code(code)
 
         if response['status'] == 200:
-            return render_template('index.html', time=time.time(), code=code)
+            user_info = response['data']
+            print(user_info)
+            line_login_handler = LoginHandler()
+            line_member = line_login_handler.line_login(user_info)
+            return render_template('index.html', time=time.time(), code=json.dumps(line_member))
 
         else:
             return render_template('error.html', error_msg=response['data'])
@@ -54,11 +61,22 @@ def index():
         user_info = google_login_api.search_user_info(credential)
         if not user_info:
             return render_template('error.html', error_msg='credential is invalid')
-        return render_template('index.html', time=time.time(), code=user_info.get('google_account_id'))
+
+        google_login_handler = LoginHandler()
+        member_token = google_login_handler.google_login(user_info)
+        return render_template('index.html', time=time.time(), code=member_token)
 
     # 身分驗證
+    return render_template('index.html', time=time.time())
 
-    return render_template('index.html', time=time.time(), code="null")
+
+@app.route('/api/searchUserInfo')
+def searchUserInfo():
+    member_token = request.headers.get('Authorization')
+    login_handler = LoginHandler()
+    user_info = login_handler.user_info_handler(member_token)
+
+    return {'data': user_info}
 
 
 @app.route('/login')
@@ -69,12 +87,13 @@ def login():
 
 @app.route('/calendar')
 def calandar():
-    return render_template('calendar.html')
+    return render_template('calendar.html', time=time.time())
 
 
-@app.route('/myArtist')
-def myArtist():
-    return render_template('my-artist.html')
+@app.route('/myArtists')
+def myArtists():
+
+    return render_template('my-artists.html', time=time.time())
 
 
 @app.route('/concert/<id>')

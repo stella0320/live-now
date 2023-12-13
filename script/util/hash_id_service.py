@@ -17,3 +17,13 @@ class HashIdService():
         hashids = Hashids(salt=os.getenv('HASH_ID_SALT'),
                           min_length=15)
         return hashids.decode(hash_id)
+
+    def encode_member_id(self, member_id):
+        hashids = Hashids(salt=os.getenv('HASH_ID_SALT'),
+                          min_length=8)
+        return hashids.encode(member_id)
+
+    def decode_member_id(self, member_hash_id):
+        hashids = Hashids(salt=os.getenv('HASH_ID_SALT'),
+                          min_length=8)
+        return hashids.decode(member_hash_id)
