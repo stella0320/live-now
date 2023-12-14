@@ -104,13 +104,13 @@
     display: flex;
     flex: none;
     flex-direction: column;
-    padding-left: 10px;
+    padding: 0px 10px;
 }
 
 .concert-info-content-item-time-subitem {
     display: flex;
     flex: none;
-    
+    width: 100%;
 }
 
 .concert-info-content-item-time-subitem-time {
@@ -127,4 +127,48 @@
     justify-content: center;
     padding-left: 3px;
 
+}
+
+
+.concert-item-icon-container {
+    display: flex;
+    flex: auto;
+    width: 10%;
+    height: 100%;
+    align-self: center;
+    justify-content: flex-end
+}
+
+.concert-item-icon{
+    display: flex;
+    flex: none;
+    height: 30px;
+    width: 30px;
+}
+
+.svg-icon {
+    --color-svg: rgb(224, 36,94);
+    color: rgb(224, 36,94);
+    stroke: rgb(224, 36,94);
+    fill: var(--color-svg)
+}
+
+.love-icon-btn {
+    border-radius: 50%;
+    cursor: pointer;
+    height: 30px;
+    width: 100%;
+}
+
+.love-icon-hide {
+    display: none;
+    visibility: hidden;
+    height: 0;
+}
+
+svg {
+  fill: transparent;
+  stroke: gray;
+  /* width: 40px; */
+  /* height: 40px; */  
 }

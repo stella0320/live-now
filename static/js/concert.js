@@ -1,4 +1,60 @@
 
+function generateLoveIcon(timeData) {
+    let container = document.createElement('div');
+    container.classList.add('concert-item-icon-container');
+
+    let itemIcon = document.createElement('div')
+    itemIcon.classList.add('concert-item-icon')
+    
+
+    let iconBtn = document.createElement('label')
+    iconBtn.classList.add('love-icon-btn')
+
+    let checkBoxElement = document.createElement('input')
+    checkBoxElement.type = 'checkbox';
+    checkBoxElement.classList.add('love-icon-hide')
+    checkBoxElement.classList.add('love-icon-checkbox');
+    checkBoxElement.setAttribute('data-id', timeData['concert_time_table_id'])
+    
+
+    let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('width', '30');
+    svg.setAttribute('height', '30');
+
+    // let path = document.createElement('path');
+    let path = document.createElementNS('http://www.w3.org/2000/svg', 'path');  
+    // path.classList.add('svg-icon');
+    // path.setAttribute('fill', 'var(--color-svg');
+    // path.setAttribute('color', 'rgb(224, 36,94)');
+    // path.setAttribute('stroke', 'rgb(224, 36,94)')
+    path.setAttribute('stroke-linecap', 'round');
+    path.setAttribute('stroke-width', '.8');
+    path.setAttribute('d', 'M 4.318 6.318 a 4.5 4.5 0 0 0 0 6.364 L 12 20.364 l 7.682 -7.682 a 4.5 4.5 0 0 0 -6.364 -6.364 L 12 7.636 l -1.318 -1.318 a 4.5 4.5 0 0 0 -6.364 0 Z');
+
+    checkBoxElement.addEventListener('click', function(e) {
+        let concertDateTimeEventId = this.getAttribute("data-id");
+        path.classList.toggle('svg-icon');
+    });
+
+
+    // 如果user已經有加入最愛要顯示顏色
+    let ran = Math.floor(Math.random() * 2);
+    console.log(ran)
+    if (ran == 0) {
+        console.log('id:'+timeData['concert_time_table_id']);
+        path.classList.toggle('svg-icon');
+    }
+
+    iconBtn.appendChild(checkBoxElement);
+    iconBtn.append(svg);
+    svg.appendChild(path);
+    
+    
+    itemIcon.appendChild(iconBtn);
+    container.appendChild(itemIcon);
+    return container
+}
+
 function generateConcertInfoTime(contentDiv, timeDataList) {
     if (timeDataList && timeDataList.length > 0) {
         let timeDiv = document.createElement('div');
@@ -10,6 +66,8 @@ function generateConcertInfoTime(contentDiv, timeDataList) {
             subTimeDiv.classList.add('concert-info-content-item-time-subitem');
 
             let time = timeData['concert_time_table_datetime'];
+            
+            
             let concertTimeDiv = document.createElement('div');
             concertTimeDiv.classList.add('concert-info-content-item-time-subitem-time');
             concertTimeDiv.classList.add('concert-info-content-item-text-style');
@@ -29,6 +87,9 @@ function generateConcertInfoTime(contentDiv, timeDataList) {
             
             
             timeDiv.appendChild(subTimeDiv);
+
+            iconContainer = generateLoveIcon(timeData)
+            subTimeDiv.appendChild(iconContainer)
         }
         contentDiv.appendChild(timeDiv);
     }
@@ -150,11 +211,17 @@ function generateConcertInfoElements(data) {
 
     let concertTime = data['concert_time_list'];
     let concertTimeItem = generateConcertInfoContentItem('演出時間', concertTime);
-    concertInfoContentText.appendChild(concertTimeItem);
+    if (concertTimeItem) {
+        concertInfoContentText.appendChild(concertTimeItem);
+    }
+    
 
     let sellTicketTime = data['sell_ticket_time_list'];
     let sellTicketTimeItem = generateConcertInfoContentItem('售票時間', sellTicketTime);
-    concertInfoContentText.appendChild(sellTicketTimeItem);
+    if (sellTicketTimeItem) {
+        concertInfoContentText.appendChild(sellTicketTimeItem);
+    }
+    
 
     let systemDomain = data['concert_info_ticket_system_id'] == 1 ? 'https://tixcraft.com' : '';
     let sellTicketLink = systemDomain + data['concert_info_page_url'];
@@ -165,3 +232,16 @@ function generateConcertInfoElements(data) {
     container.appendChild(concertInfoContainer);
     return container;
 }
+
+function initConcertTimeClick() {
+    let checkboxList = document.getElementsByClassName('love-icon-checkbox');
+    for (let i = 0; i < checkboxList.length;i++) {
+        let checkbox = checkboxList[i];
+        checkbox.addEventListener('click', function(e) {
+            var id = this.getAttribute("data-id");
+            console.log(id);
+
+        });
+    }
+}
+initConcertTimeClick()

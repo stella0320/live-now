@@ -37,6 +37,10 @@ body, html {
     /* padding: 10px 0px 10 px 10px; */
     background-color: #f9f4e1;
     
+    
+    @media (max-width:1200px) {
+        padding: 0px 20px;
+    }
 }
 
 .header-container {
@@ -93,12 +97,12 @@ body, html {
 .header-function-login-user {
     display: none;
     flex: none;
-    height: 60px;
-    width: 60px;
+    height: 50px;
+    width: 50px;
     border-radius: 50%;
     border: 2px solid gray;
-    background-size: 60px;
-    background-color: #bbb;
+    background-size: 50px;  
+    background-color: #ffffff;
     /* background-image:url('https://lh3.googleusercontent.com/a/ACg8ocKejMnMOl0F-0afMqu8j-rhcz5fWEUxafHy6iYb-wYIrw0=s96-c') */
 }
 

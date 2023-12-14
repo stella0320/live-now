@@ -42,12 +42,6 @@ function closeModal() {
 }
 
 async function openModal(modalWidth) {
-    
-    // let modalBodyList = document.getElementsByClassName('live-now-modal-body')
-    // if (modalBodyList) {
-    //     modalBody = modalBodyList[0]
-    //     modalBody.style.display = 'block';
-    // }
 
     // 開modal時，將body的scroll bar關閉
     let body = document.getElementsByTagName('body')[0]

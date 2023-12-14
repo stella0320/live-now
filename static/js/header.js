@@ -27,10 +27,13 @@ function searchUserInfo(memberToken) {
             console.log(userInfo)
             if (userInfo) {
                 const loginUserDiv = document.getElementById('loginUser')
+                loginUserDiv.setAttribute('data-id', userInfo['member_hash_id'])
                 loginUserDiv.style.display = 'flex';
                 const picUrl = userInfo['profile_pic_url'];
                 if (picUrl) {
                     loginUserDiv.style.backgroundImage = 'url(' + picUrl + ')';
+                } else {
+                    loginUserDiv.style.backgroundImage = 'url(/static/images/icon/user.png)';
                 }
             }
         }
