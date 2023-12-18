@@ -44,7 +44,6 @@ let refreshCalendarEvent = function(data) {
     }
 }
 async function queryConcertTimeDataByTimePeriod(calendar, startDate, endDate) {
-    changeModalBlackBackgroudDisplay('block');
     changeModalLoadingDisplay('block');
     fetch('../api/calendar/queryConcertTimeDataByTimePeriod?startDate=' + startDate + "&endDate=" + endDate)
     .then(handleConcertTime)
@@ -55,7 +54,6 @@ async function queryConcertTimeDataByTimePeriod(calendar, startDate, endDate) {
         console.log(err);
     })
     .finally(() => {
-        changeModalBlackBackgroudDisplay('none');
         changeModalLoadingDisplay('none');
     });
 }
@@ -227,8 +225,9 @@ let initFullCalendar = function() {
         // https://fullcalendar.io/docs/eventMouseEnter
         // console.log('Event: ' + info.event.id);
         console.log('Event: ' + info.event.groupId);
-        changeModalBlackBackgroudDisplay('block');
         changeModalLoadingDisplay('block');
+        changeModalBlackBackgroudDisplay('block');
+       
         queryConcertInfoByHashId(info.event.groupId);
         
     })
@@ -239,9 +238,8 @@ let initFullCalendar = function() {
 }
 
 async function queryConcertInfoByHashId(hashId) {
-    
-    fetch('/api/concert_info/' + hashId)
-    .then(async (response) => {
+    const member_token= localStorage.getItem('memberToken')
+    fetch('/api/concert_info?concert_info_hash_id=' + hashId + "&member_token=" + member_token).then(async (response) => {
         if (response.status == 200) {
             // 跳到結帳頁面
             let result = await response.json();
@@ -256,3 +254,5 @@ async function queryConcertInfoByHashId(hashId) {
         openModal('1200px');
     });
 }
+
+initFullCalendar();

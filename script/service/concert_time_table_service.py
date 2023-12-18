@@ -26,14 +26,16 @@ class ConcertTimeTableService(object):
     def __commit__(self):
         self.__connect.commit()
 
-    def query_concert_time_table_by_id_and_type(self, concert_info_id, concert_time_table_type):
+    def query_concert_time_table_by_id_and_type_and_calendar_id(self, concert_info_id, concert_time_table_type, private_calendar_id):
 
-        concert_info_sql = "select * from live_now.concert_time_table "
-        concert_info_sql += "  where concert_info_id = %s and concert_time_table_type = %s"
+        concert_info_sql = "select a.*, b.member_calendar_event_id from "
+        concert_info_sql += "(select * from live_now.concert_time_table where concert_info_id = %s and concert_time_table_type = %s) a "
+        concert_info_sql += " left join (select * from live_now.member_calendar_event where private_calendar_id = %s) b "
+        concert_info_sql += "on a.concert_time_table_id = b.concert_time_table_id "
 
         self.__open__()
         self.__cursor.execute(
-            concert_info_sql, (concert_info_id, concert_time_table_type, ))
+            concert_info_sql, (concert_info_id, concert_time_table_type, private_calendar_id, ))
         result = self.__cursor.fetchall()
         self.__close__()
         if result and len(result) > 0:

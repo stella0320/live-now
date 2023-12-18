@@ -1,4 +1,6 @@
 
+
+
 function generateLoveIcon(timeData) {
     let container = document.createElement('div');
     container.classList.add('concert-item-icon-container');
@@ -21,12 +23,7 @@ function generateLoveIcon(timeData) {
     svg.setAttribute('width', '30');
     svg.setAttribute('height', '30');
 
-    // let path = document.createElement('path');
     let path = document.createElementNS('http://www.w3.org/2000/svg', 'path');  
-    // path.classList.add('svg-icon');
-    // path.setAttribute('fill', 'var(--color-svg');
-    // path.setAttribute('color', 'rgb(224, 36,94)');
-    // path.setAttribute('stroke', 'rgb(224, 36,94)')
     path.setAttribute('stroke-linecap', 'round');
     path.setAttribute('stroke-width', '.8');
     path.setAttribute('d', 'M 4.318 6.318 a 4.5 4.5 0 0 0 0 6.364 L 12 20.364 l 7.682 -7.682 a 4.5 4.5 0 0 0 -6.364 -6.364 L 12 7.636 l -1.318 -1.318 a 4.5 4.5 0 0 0 -6.364 0 Z');
@@ -34,16 +31,31 @@ function generateLoveIcon(timeData) {
     checkBoxElement.addEventListener('click', function(e) {
         let concertDateTimeEventId = this.getAttribute("data-id");
         path.classList.toggle('svg-icon');
+        const memberToken = localStorage.getItem('memberToken')
+        // changeModalBlackBackgroudDisplay('block');
+        changeModalLoadingDisplay('block');
+        fetch('/api/myCalendar/toggleConcertEventToPrivateCalendar?member_token=' + memberToken + '&concert_time_table_id=' + concertDateTimeEventId)
+        .then((response) => {
+            // changeModalBlackBackgroudDisplay('none');
+          
+        }).finally((response) => {
+            // changeModalBlackBackgroudDisplay('none');
+            changeModalLoadingDisplay('none');
+        })
     });
 
-
-    // 如果user已經有加入最愛要顯示顏色
-    let ran = Math.floor(Math.random() * 2);
-    console.log(ran)
-    if (ran == 0) {
-        console.log('id:'+timeData['concert_time_table_id']);
+    
+    const isLoveConcertEvent = timeData['member_calendar_event_id']
+    if (!!isLoveConcertEvent) {
         path.classList.toggle('svg-icon');
     }
+    // 如果user已經有加入最愛要顯示顏色
+    // let ran = Math.floor(Math.random() * 2);
+    // console.log(ran)
+    // if (ran == 0) {
+    //     console.log('id:'+timeData['concert_time_table_id']);
+    //     path.classList.toggle('svg-icon');
+    // }
 
     iconBtn.appendChild(checkBoxElement);
     iconBtn.append(svg);

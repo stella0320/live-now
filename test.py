@@ -10,6 +10,8 @@ from sqlalchemy import Table
 from sqlalchemy import insert, select
 from sqlalchemy.orm import sessionmaker
 import json
+from script.db_service.member_private_calendar_service import MemberPrivateCalendarService
+from script.db_service.member_calendar_event_service import MemberCalendarEventService
 
 
 def session_insert_test():
@@ -78,41 +80,14 @@ def update_member():
         session.commit()
 
 
+def create_private_calendar_test():
+    service = MemberPrivateCalendarService()
+    calendar = service.create_private_calendar('myCalendar', 7)
+    print(calendar)
+
+
 if __name__ == "__main__":
-    member_obj = {
-        'member_mail': 'jud40322@gmail.com',
-        'member_google_display_name': '123'
-    }
-    if member_obj:
-        mail = member_obj.get('member_mail')
-        engine = create_engine(
-            "mysql+pymysql://root:root@localhost/live_now", echo=True)
-        Session = sessionmaker(engine)
-
-    with Session() as session:
-        try:
-            if mail:
-                #  查詢有返回
-                member = session.query(Members).filter_by(
-                    member_mail=mail).first()
-
-            if member:
-                # update
-                # members_table = self.__table__
-                member_id = getattr(member, 'member_id')
-                # stmt = update(members_table).where(
-                #     members_table.c.member_id == member_id).values()
-                member_obj['member_id'] = member_id
-                # session.execute(stmt)
-                session.execute(update(Members), [member_obj], )
-                session.commit()
-                # pass
-            else:
-                session.add(Members(**member_obj))
-                session.commit()
-                member = session.query(Members).filter_by(
-                    member_mail=mail).first()
-
-        except Exception as e:
-            session.rollback()
-            print(f'exception {e}')
+    service = MemberCalendarEventService()
+    member_calendar_event = service.create_or_delete_member_calendar_event(
+        1, 246)
+    print(member_calendar_event)

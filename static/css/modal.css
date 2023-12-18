@@ -2,7 +2,7 @@
 .live-now-modal-body {
     display: none; /*Hidden by default */
     position: fixed; 
-    z-index: 1000;
+    z-index: 10000;
     /* padding-top: 80px; Location of the box  */
     left: 0;
     top: 0;

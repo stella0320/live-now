@@ -3,8 +3,6 @@ function initCalendarHtml() {
 
     fetch('/calendar')
     .then((response) => {
-        // from modal.js
-        changeModalBlackBackgroudDisplay('block');
         changeModalLoadingDisplay('block');
         return response.text();
     }).then((html) => {
@@ -23,7 +21,6 @@ function initCalendarHtml() {
     })
     .finally(() => {
         // from modal.js
-        changeModalBlackBackgroudDisplay('none');
         changeModalLoadingDisplay('none');
     });
     
@@ -33,7 +30,6 @@ function initArtistHtml() {
     fetch('/myArtist')
     .then((response) => {
         // from modal.js
-        changeModalBlackBackgroudDisplay('block');
         changeModalLoadingDisplay('block');
         return response.text();
     }).then((html) => {
@@ -49,7 +45,6 @@ function initArtistHtml() {
     })
     .finally(() => {
         // from modal.js
-        changeModalBlackBackgroudDisplay('none');
         changeModalLoadingDisplay('none');
     });
 }

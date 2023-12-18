@@ -1,20 +1,21 @@
+
 .live-now-modal-loading {
-    /* display: flex; */
     display: none;
     flex: none;
-    z-index: 1001;
+    z-index: 20000;
     position: fixed;
-    left: 45%;
-    bottom: 52%;
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+
 }
 .lds-ring {
     display: inline-block;
     position: relative;
     width: 20px;
     height: 20px;
-    left: 50%;
-    bottom: 50%;
-
+    left: calc(50% - 20px);
+    top: calc(50% - 20px);
 }
 .lds-ring div {
     box-sizing: border-box;

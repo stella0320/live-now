@@ -20,45 +20,6 @@ class LoginHandler():
 
         return member
 
-    def create_or_update_member(self, member_obj=None):
-        member = None
-        if member_obj:
-            mail = member_obj.get('member_mail')
-            engine = create_engine(
-                "mysql+pymysql://root:root@localhost/live_now", echo=True)
-            Session = sessionmaker(engine)
-            # 把 DB engine 與 session 綁在一起
-            Session = sessionmaker(bind=engine)
-            with Session() as session:
-                try:
-                    if mail:
-                        #  查詢有返回
-                        member = session.query(Members).filter_by(
-                            member_mail=mail).first()
-
-                    if member:
-                        # update
-                        # members_table = self.__table__
-                        member_id = getattr(member, 'member_id')
-                        # stmt = update(members_table).where(
-                        #     members_table.c.member_id == member_id).values()
-                        member_obj['member_id'] = member_id
-                        # session.execute(stmt)
-                        session.execute(update(Members), [member_obj], )
-                        session.commit()
-                        # pass
-                    else:
-                        session.add(Members(**member_obj))
-                        session.commit()
-                        member = session.query(Members).filter_by(
-                            member_mail=mail).first()
-
-                except Exception as e:
-                    session.rollback()
-                    print(f'exception {e}')
-
-        return member
-
     def google_login(self, google_user_info):
         user_info = {
             'member_mail': google_user_info.get('google_email'),
@@ -86,6 +47,17 @@ class LoginHandler():
             encoded = jwt.encode(data, jwt_key, algorithm=jwt_algorithms)
 
         return encoded
+
+    def get_member_id_by_decode_user_token(self, user_token):
+        if user_token:
+            jwt_key = os.getenv('JWT_KEY')
+            jwt_algorithms = os.getenv('JWT_ALGORITHMS')
+            user_info = jwt.decode(user_token, jwt_key,
+                                   algorithms=jwt_algorithms)
+            member_id = user_info.get('member_id')
+            return member_id
+
+        return None
 
     def decode_user_token(self, token):
         if token:

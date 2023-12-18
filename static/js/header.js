@@ -41,7 +41,14 @@ function searchUserInfo(memberToken) {
 }
 
 document.getElementById('liveNowCalendar').addEventListener('click', function() {
-    initCalendarHtml();
+    // initCalendarHtml();
+    const memberToken = localStorage.getItem('memberToken');
+    if (memberToken) {
+        // 驗證token
+        window.location = '/'
+    } else {
+        window.location = '/login'
+    }
 });
 
 document.getElementById('myArtists').addEventListener('click', function() {
