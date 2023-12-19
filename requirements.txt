@@ -14,3 +14,4 @@ mysql-connector-python==8.2.0
 hashids>=1.3.1
 requests>=2.31.0
 google-api-python-client==2.109.0
+jwt==1.3.1

@@ -1,5 +1,14 @@
 
 
+function formatDateForConcert(date) {
+    let month = (date.getMonth() + 1).toString()
+    let day =  date.getDate()
+    return date.getFullYear() + '-' + formatTwoNumberForConcert(month)  + '-' + formatTwoNumberForConcert(day)
+}
+
+function formatTwoNumberForConcert(number) {
+    return (number.length == 1 ? ('0' + number) : number) 
+}
 
 function generateLoveIcon(timeData) {
     let container = document.createElement('div');
@@ -32,14 +41,18 @@ function generateLoveIcon(timeData) {
         let concertDateTimeEventId = this.getAttribute("data-id");
         path.classList.toggle('svg-icon');
         const memberToken = localStorage.getItem('memberToken')
-        // changeModalBlackBackgroudDisplay('block');
         changeModalLoadingDisplay('block');
         fetch('/api/myCalendar/toggleConcertEventToPrivateCalendar?member_token=' + memberToken + '&concert_time_table_id=' + concertDateTimeEventId)
         .then((response) => {
-            // changeModalBlackBackgroudDisplay('none');
-          
+            const isMyCalendar = document.getElementById('isMyCalendar')
+            let calendarView = calendar.view
+            let startDate = formatDateForConcert(calendarView.currentStart)
+            let endDate = formatDateForConcert(calendarView.currentEnd)
+            // caleadar.js
+            queryConcertTimeDataByTimePeriod(startDate, endDate, !!isMyCalendar)
+            
         }).finally((response) => {
-            // changeModalBlackBackgroudDisplay('none');
+            
             changeModalLoadingDisplay('none');
         })
     });

@@ -104,7 +104,7 @@
     display: flex;
     flex: none;
     flex-direction: column;
-    padding: 0px 10px;
+    padding-right: 10px;
 }
 
 .concert-info-content-item-time-subitem {

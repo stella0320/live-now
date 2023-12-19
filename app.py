@@ -85,14 +85,13 @@ def login():
     return render_template('login.html', time=time.time(), google_login_client_id=google_login_client_id)
 
 
-@app.route('/calendar')
-def calandar():
-    return render_template('calendar.html', time=time.time())
+@app.route('/myCalendar')
+def myCalendar():
+    return render_template('my-calendar.html', time=time.time())
 
 
 @app.route('/myArtists')
 def myArtists():
-
     return render_template('my-artists.html', time=time.time())
 
 

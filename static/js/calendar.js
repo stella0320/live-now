@@ -34,7 +34,8 @@ let refreshCalendarEvent = function(data) {
                 end: endDate,
                 borderColor:data[i]['concert_time_table_type'] == '售票時間' ? 'red' : 'blue',
                 extendedProps: {
-                    'singerName': data[i]['singer_info_name']
+                    'singerName': data[i]['singer_info_name'],
+                    'member_calendar_event_id' : data[i]['member_calendar_event_id']
                 }
             }
             // color: https://fullcalendar.io/docs/list-view
@@ -43,9 +44,17 @@ let refreshCalendarEvent = function(data) {
         }
     }
 }
-async function queryConcertTimeDataByTimePeriod(calendar, startDate, endDate) {
+async function queryConcertTimeDataByTimePeriod(startDate, endDate, isMycalendar) {
     changeModalLoadingDisplay('block');
-    fetch('../api/calendar/queryConcertTimeDataByTimePeriod?startDate=' + startDate + "&endDate=" + endDate)
+    let formData = new FormData();
+    formData.append('startDate', startDate);
+    formData.append('endDate', endDate);
+    formData.append('memberToken', localStorage.getItem('memberToken'));
+    formData.append('isMycalendar', isMycalendar);
+    fetch('../api/calendar/queryConcertTimeDataByTimePeriod', {
+        method:'POST',
+        body: formData
+    })
     .then(handleConcertTime)
     .then((data) => {
         refreshCalendarEvent(data)
@@ -63,7 +72,7 @@ function formatTwoNumber(number) {
 }
 function formatDate(date) {
     let month = (date.month + 1).toString()
-    let day =  date.day.toString().toString()
+    let day =  date.day.toString()
     return date.year + '/' + formatTwoNumber(month)  + '/' + formatTwoNumber(day)
 }
 
@@ -99,28 +108,25 @@ function createItemInlistWeek(arg) {
     let iconLabel = document.createElement('label');
     iconLabel.classList.add('love-icon-btn');
 
-    let inputElement = document.createElement('input');
-    inputElement.type = 'checkbox';
-    inputElement.classList.add('love-icon-hide');
-    inputElement.classList.add('love-icon-checkbox');
 
-    let svg = document.createElement('svg');
-    svg.setAttribute('width', '40');
-    svg.setAttribute('height', '40');
+    let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('width', '30');
+    svg.setAttribute('height', '30');
 
-    let path = document.createElement('path');
-    path.setAttribute('fill', 'var(--color-svg)');
+    let path = document.createElementNS('http://www.w3.org/2000/svg', 'path');  
     path.setAttribute('stroke-linecap', 'round');
-    path.setAttribute('stroke-linejoin', 'round');
     path.setAttribute('stroke-width', '.8');
-    path.setAttribute('d', 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z');
+    path.setAttribute('d', 'M 4.318 6.318 a 4.5 4.5 0 0 0 0 6.364 L 12 20.364 l 7.682 -7.682 a 4.5 4.5 0 0 0 -6.364 -6.364 L 12 7.636 l -1.318 -1.318 a 4.5 4.5 0 0 0 -6.364 0 Z');
+    
+    const isLoveConcertEvent = extendedProps['member_calendar_event_id']
+    if (!!isLoveConcertEvent) {
+        path.classList.toggle('svg-icon');
+    }
+    
     svg.appendChild(path);
-
-    // <path fill="var(--color-svg)" stroke-linecap="round" stroke-linejoin="round" stroke-width=".8" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
 
     iconContainer.appendChild(iconItemContainer);
     iconItemContainer.appendChild(iconLabel);
-    iconLabel.appendChild(inputElement);
     iconLabel.appendChild(svg);
 
     container.appendChild(titleContainer);
@@ -130,9 +136,8 @@ function createItemInlistWeek(arg) {
 }
 let calendar;
 
-let initFullCalendar = function() {
+let initFullCalendar = function(isMycalendar) {
     var calendarEl = document.getElementById('calendar');
-    console.log(calendarEl);
     calendar = new FullCalendar.Calendar(calendarEl, {
         schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
         initialView: 'listWeek',
@@ -206,7 +211,7 @@ let initFullCalendar = function() {
         // console.log('datesSet: ');
         // console.log('datesSet ' + dateInfo.startStr);
         // console.log('datesSet ' + dateInfo.endStr);
-        queryConcertTimeDataByTimePeriod(calendar, dateInfo.startStr, dateInfo.endStr)
+        queryConcertTimeDataByTimePeriod(dateInfo.startStr, dateInfo.endStr, isMycalendar)
     })
 
     calendar.on('eventMouseEnter', function(mouseEnterInfo) {
@@ -224,12 +229,10 @@ let initFullCalendar = function() {
     calendar.on('eventClick', function(info) {
         // https://fullcalendar.io/docs/eventMouseEnter
         // console.log('Event: ' + info.event.id);
-        console.log('Event: ' + info.event.groupId);
+        const concert_info_hash_id = info.event.groupId
         changeModalLoadingDisplay('block');
         changeModalBlackBackgroudDisplay('block');
-       
-        queryConcertInfoByHashId(info.event.groupId);
-        
+        queryConcertInfoByHashId(concert_info_hash_id);
     })
     calendar.addEventSource({
         'backgroundColor': 'background-color: rgba(247, 119, 6 ,0.2);',
@@ -244,10 +247,8 @@ async function queryConcertInfoByHashId(hashId) {
             // 跳到結帳頁面
             let result = await response.json();
             let data = result['data']
-            console.log(data);
             let concertInfoElements = generateConcertInfoElements(data);
             fillUpModalContent(concertInfoElements);
-            
         }
     }).then(() => {
         changeModalLoadingDisplay('none');
@@ -255,4 +256,4 @@ async function queryConcertInfoByHashId(hashId) {
     });
 }
 
-initFullCalendar();
+

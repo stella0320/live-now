@@ -7,6 +7,7 @@ from ..util.hash_id_service import HashIdService
 from ..service.dbService import DbService
 from ..handler.login_handler import LoginHandler
 from ..handler.my_calendar_handler import MyCalendarHandler
+from ..handler.calendar_handler import CalendarHandler
 concert_info_route = Blueprint("concert_info_route", __name__)
 
 
@@ -46,12 +47,27 @@ def query_concert_info():
     return jsonify({'data': concert_info})
 
 
-@concert_info_route.route('/api/calendar/queryConcertTimeDataByTimePeriod')
+@concert_info_route.route('/api/calendar/queryConcertTimeDataByTimePeriod', methods=['POST'])
 def queryConcertTimeDataByTimePeriod():
-    startDate = request.args.get('startDate')
-    endDate = request.args.get('endDate')
-    db_connect = DbService()
-    data = db_connect.query_concert_time_table(startDate, endDate)
+
+    startDate = request.form.get('startDate')
+    endDate = request.form.get('endDate')
+    isMycalendar = request.form.get('isMycalendar')
+    member_token = request.form.get('memberToken')
+    login_handler = LoginHandler()
+    member_id = login_handler.get_member_id_by_decode_user_token(
+        member_token)
+
+    data = None
+    if isMycalendar == 'true':
+
+        my_calendar_handler = MyCalendarHandler()
+        data = my_calendar_handler.query_concert_time_table_by_my_calendar(
+            member_id, startDate, endDate)
+    else:
+        calendar_handler = CalendarHandler()
+        data = calendar_handler.query_concert_time_table(
+            member_id, startDate, endDate)
 
     if data:
         for item in data:

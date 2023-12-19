@@ -41,11 +41,20 @@ function searchUserInfo(memberToken) {
 }
 
 document.getElementById('liveNowCalendar').addEventListener('click', function() {
-    // initCalendarHtml();
     const memberToken = localStorage.getItem('memberToken');
     if (memberToken) {
         // 驗證token
         window.location = '/'
+    } else {
+        window.location = '/login'
+    }
+});
+
+document.getElementById('myCalendar').addEventListener('click', function() {
+    const memberToken = localStorage.getItem('memberToken');
+    if (memberToken) {
+        // 驗證token
+        window.location = '/myCalendar'
     } else {
         window.location = '/login'
     }
@@ -59,5 +68,4 @@ document.getElementById('myArtists').addEventListener('click', function() {
     } else {
         window.location = '/login'
     }
-    // initArtistHtml();
 });
