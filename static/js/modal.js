@@ -68,4 +68,14 @@ function fillUpModalContent(contentElements) {
     }
 }
 
+window.onclick = function(event) {
+    const modal = document.getElementById('modalContainer')
+    // !event.detail || event.detail == 1 防止雙擊畫面
+    if ((!event.detail || event.detail == 1) && event.target == modal) {
+        console.log('window click');
+        closeModal();
+    }
+}
+
+
 initCloseModalBtn();
