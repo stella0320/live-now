@@ -1,5 +1,4 @@
 from flask import *
-import requests
 from ..service.concert_info_service import ConcertInfoService
 from ..service.concert_time_table_service import ConcertTimeTableService
 from ..db_service.member_private_calendar_service import MemberPrivateCalendarService
@@ -17,7 +16,7 @@ def query_concert_info():
     # concert info
     concert_info_hash_id = request.args.get('concert_info_hash_id')
     hash_id_service = HashIdService()
-    id = hash_id_service.decode_id(concert_info_hash_id)[0]
+    id = hash_id_service.decode_id(concert_info_hash_id)
     concert_info_service = ConcertInfoService()
     concert_info = concert_info_service.query_concert_info_by_id(id)
     concert_info_id = concert_info['concert_info_id']

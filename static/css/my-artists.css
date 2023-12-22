@@ -1,0 +1,175 @@
+.my-artist-search-frame {
+    display: flex;
+    justify-content: center;
+    padding: 50px 50px 0px 50px;
+}
+
+.my-artist-search-container {
+    display: flex;
+    flex: none;
+    width: 1100px;
+    /* background-color: aqua; */
+    @media (max-width:1200px) {
+        width: calc(100% - 100px);
+    }
+}
+.my-artist-search {
+    display: flex;
+    flex: none;
+    width: 40%;
+    height: 46px;
+    /* background-color: red; */
+    border: 1px solid grey;
+    border-radius: 5px 5px 5px 5px;
+    @media (max-width:1200px) {
+        width: calc(80%);
+    }
+}
+
+.my-artist-search-text {
+    display: flex;
+    flex: none;
+    width: 100%;
+}
+
+.my-artist-search-text > input {
+    width: 100%;
+    /* height: 46px; */
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    padding: 15px;
+    border-radius: 5px 0px 0px 5px;
+    border-width: 0px;
+}
+
+.my-artist-search-btn {
+    display: flex;
+    flex: none;
+    width: 20px;
+    height: 46px;
+}
+
+.my-artist-search-btn > button {
+    background-color: rgb(255, 153, 51);
+    border-radius: 0px 5px 5px 0px;
+    border-width: 0px;
+}
+
+.my-artist-search-btn > button:hover {
+    cursor: pointer;
+}
+
+.my-artist-search-btn > button:active {
+    background-color: rgb(199, 105, 12); ;
+}
+
+.my-artist-frame {
+    display: flex;
+    justify-content: center;
+
+}
+
+.all-artist-container {
+    display: flex;
+    flex: none;
+    width: 1100px;
+    padding: 50px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    /* background-color: red; */
+    @media (max-width:1200px) {
+        width: calc(100% - 100px);
+    }
+}
+
+
+.artist-container {
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    width: 158px;
+    height: 220px;
+    background-color:  rgb(215, 215, 215);
+    
+    border-radius: .8rem;
+    padding: 10px;
+    margin: 20px 20px;
+    box-shadow: 0px 4px 10px 0px #ababab;
+    /* @media (max-width:1200px) {
+        margin: 20px auto;
+    } */
+    /* box-shadow: 0px 4px 30px 0px #ababab; */
+}
+
+
+.artist-container:hover {
+    transform: translate(-5px, -5px); 
+    border: 1px  rgba(0,0,0,.2) solid;
+    box-shadow: 0px 6px 20px 0px #ababab;
+}
+.artist-container:active {
+    transform: translate(0, 0); 
+}
+.artist-container-active {
+    
+    background-color:  rgba(255, 153, 51, 0.6);
+    /* box-shadow: none; */
+
+    & .artist-name {
+        color: rgb(255, 255, 255);
+    }
+
+    & .artist-image {
+        border: 2px solid rgb(255, 255, 255);
+    }
+
+    border-color: rgb(255, 191, 113);
+}
+
+.artist-image-container {
+    display: flex;
+    flex: none;
+    width: 100%;
+    height: 60%;
+    /* background-color: red; */
+    align-items: center;
+    justify-content: center;
+} 
+
+.artist-image {
+    display: flex;
+    flex: none;
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    border: 2px solid gray;
+    background-size: 100px;  
+    background-color: #ffffff;
+    background-image:url('https://i.kfs.io/artist/global/31603,0v14/fit/300x300.jpg');
+   
+}
+
+.artist-name-container {
+    display: flex;
+    flex: none;
+    width: 100%;
+    height: 30%;
+    /* background-color: blue; */
+    align-items: center;
+    justify-content: center;
+}
+
+.artist-name {
+    display: flex;
+    flex: none;
+    max-width: 100%;
+    flex: none;
+    font-weight: 700;
+    font-family: Noto Sans TC;
+    font-size: 15px;
+    font-style: normal;
+    white-space:pre-wrap;
+}

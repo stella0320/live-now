@@ -3,6 +3,7 @@ import time
 from script.db_service.members_service import MembersService
 from script.route.concert_info_route import concert_info_route
 from script.route.line_api_route import line_api_route
+from script.route.singer_info_route import singer_info_route
 from script.api.line_login_api import LineLoginApi
 from script.api.google_login_api import GoogleLoginApi
 from script.handler.login_handler import LoginHandler
@@ -19,6 +20,7 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
 
 app.register_blueprint(concert_info_route)
 app.register_blueprint(line_api_route)
+app.register_blueprint(singer_info_route)
 
 
 @app.route('/', methods=['GET', 'POST'])

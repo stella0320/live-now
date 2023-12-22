@@ -16,7 +16,10 @@ class HashIdService():
     def decode_id(self, hash_id):
         hashids = Hashids(salt=os.getenv('HASH_ID_SALT'),
                           min_length=15)
-        return hashids.decode(hash_id)
+        id = hashids.decode(hash_id)
+        if id:
+            id = id[0]
+        return id
 
     def encode_member_id(self, member_id):
         hashids = Hashids(salt=os.getenv('HASH_ID_SALT'),

@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="/static/css/modal.css?cache={{time}}"/>
     <link rel="stylesheet" type="text/css" href="/static/css/loading.css?cache={{time}}"/>
     <link rel="stylesheet" type="text/css" href="/static/css/header.css?cache={{time}}"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/my-artists.css?cache={{time}}"/>
     <link rel="shortcut icon" href="/static/images/logo/live-now-favicon-black.png" type="image/x-icon">
     <title>Live Now!</title>
   </head>
@@ -19,8 +20,83 @@
         {% include 'header.html' %}
     </div>
     <!-- header end-->
-    <div class="content">
-        徐佳瑩
+    <div class="my-artist-search-frame">
+      <div class="my-artist-search-container">
+        <div class="my-artist-search">
+          <div class="my-artist-search-text">
+              <input type="text" placeholder="Search By Singer Name" id="singerName"/>
+          </div>
+          <div class="my-artist-search-btn">
+              <button type="button" id="searchSingerNameBtn"><img src="../static/images/icon/search.png"></button>
+          </div>
+        </div>  
+      </div>
+    </div>
+    
+    <div class="my-artist-frame">
+
+      <div class="all-artist-container" id="myArtistContent">
+          <!-- <div class="all-artist-sub-container"> -->
+          <!-- <div class="artist-container">
+            <div class="artist-image-container">
+              <div class="artist-image"></div>
+            </div>
+            <div class="artist-name-container">
+              <div class="artist-name">徐佳瑩</div>
+            </div>
+          </div>
+
+          <div class="artist-container">
+            <div class="artist-image-container">
+              <div class="artist-image"></div>
+            </div>
+            <div class="artist-name-container">
+              <div class="artist-name">徐佳瑩</div>
+            </div>
+          </div>
+
+          <div class="artist-container">
+            <div class="artist-image-container">
+              <div class="artist-image"></div>
+            </div>
+            <div class="artist-name-container">
+              <div class="artist-name">徐佳瑩</div>
+            </div>
+          </div>
+
+          <div class="artist-container">
+            <div class="artist-image-container">
+              <div class="artist-image"></div>
+            </div>
+            <div class="artist-name-container">
+              <div class="artist-name">徐佳瑩</div>
+            </div>
+          </div>
+
+          <div class="artist-container">
+            <div class="artist-image-container">
+              <div class="artist-image"></div>
+            </div>
+            <div class="artist-name-container">
+              <div class="artist-name">徐佳瑩</div>
+            </div>
+          </div>
+
+          <div class="artist-container">
+            <div class="artist-image-container">
+              <div class="artist-image"></div>
+            </div>
+            <div class="artist-name-container">
+              <div class="artist-name">徐佳瑩</div>
+            </div>
+          </div> -->
+         
+
+
+
+
+        <!-- </div> -->
+      </div>
     </div>
     <div>footer</div>
 
@@ -30,5 +106,5 @@
 
 <script src="/static/js/modal.js?cache={{time}}"></script>
 <script src="/static/js/header.js?cache={{time}}"></script>
-
+<script src="/static/js/my-artists.js?cache={{time}}"></script>
 </html>
