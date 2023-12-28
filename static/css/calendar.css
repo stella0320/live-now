@@ -16,6 +16,17 @@
     width: 90%;
 }
 
+.concert-item-title-invalid {
+
+    & .fc-event-title, .concert-item-title {
+        text-decoration: line-through;
+    }
+
+    color: rgb(103, 103, 103);
+    background-color: rgba(214, 213, 213, 0.699);;
+    
+}
+
 body, .fc-content, .fc-event, .fc-list-item, .fc-daygrid-event, .fc-timegrid-event {
     user-select: auto;
 }

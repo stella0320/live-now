@@ -32,12 +32,18 @@ let refreshCalendarEvent = function(data) {
                 title: data[i]['concert_info_name'],
                 start: startDate, 
                 end: endDate,
+                classNames: '',
                 borderColor:data[i]['concert_time_table_type'] == '售票時間' ? 'red' : 'blue',
                 extendedProps: {
                     'singerName': data[i]['singer_info_name'],
                     'member_calendar_event_id' : data[i]['member_calendar_event_id']
                 }
             }
+            let now = new Date()
+            if (startDate < now) {
+                item['classNames'] = ['concert-item-title-invalid']
+            }
+
             // color: https://fullcalendar.io/docs/list-view
             // console.log(item)
             calendar.addEvent(item);
@@ -172,8 +178,6 @@ let initFullCalendar = function(isMycalendar) {
                 eventContent: function(arg) {
                     
                     let italicEl = createItemInlistWeek(arg)
-                    // console.log(italicEl)
-                    // italicEl.innerHTML = arg.event.title + '[' + arg.event.extendedProps.singerName + ']'
                     let arrayOfDomNodes = [ italicEl ]
                 
                     return { domNodes: arrayOfDomNodes}
@@ -216,14 +220,11 @@ let initFullCalendar = function(isMycalendar) {
 
     calendar.on('eventMouseEnter', function(mouseEnterInfo) {
         mouseEnterInfo.el.style = 'font-weight: 900;border:rgb(247, 119, 6) 2px dashed;backgroundColor: rgba(247, 119, 6 ,0.2)';
-    
-        // console.log(mouseEnterInfo.jsEvent.clientX);
-        // console.log(mouseEnterInfo.jsEvent.clientY);
     })
 
     calendar.on('eventMouseLeave', function(mouseEnterInfo) {
         // https://fullcalendar.io/docs/eventMouseEnter
-        mouseEnterInfo.el.style = 'color:black';
+        mouseEnterInfo.el.style = 'border:none';
     })
 
     calendar.on('eventClick', function(info) {
@@ -234,9 +235,8 @@ let initFullCalendar = function(isMycalendar) {
         changeModalBlackBackgroudDisplay('block');
         queryConcertInfoByHashId(concert_info_hash_id);
     })
-    calendar.addEventSource({
-        'backgroundColor': 'background-color: rgba(247, 119, 6 ,0.2);',
-    })
+    
+
     calendar.render();
 }
 

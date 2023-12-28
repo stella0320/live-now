@@ -19,7 +19,6 @@ class MemberCalendarEventService(object):
                  MemberCalendarEvent.concert_time_table_id == concert_time_table_id)).first()
         try:
             if member_calendar_event:
-                # delete
                 self.__session__.delete(member_calendar_event)
                 self.__session__.commit()
             else:

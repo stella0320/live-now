@@ -52,6 +52,15 @@ function generateSingerInfoElement(singerInfoList) {
             imageContainer.classList.add('artist-image-container')
             const image = document.createElement('div')
             image.classList.add('artist-image')
+            const singerInfoImage = singerInfoList[i]['singer_info_image_url']
+            if (singerInfoImage) {
+                image.style.backgroundImage = 'url(' + singerInfoImage + ')';
+            } else {
+                image.style.backgroundImage = 'url(/static/images/icon/user.png)';
+            }
+            
+            
+            
             imageContainer.appendChild(image)
 
             const nameContainer = document.createElement('div')
