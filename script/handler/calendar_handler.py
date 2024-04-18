@@ -10,6 +10,8 @@ class CalendarHandler():
         private_calendar = member_private_calendar_service.find_or_create_private_calendar(
             'myCalendar', member_id)
 
+        if not private_calendar:
+            return None
         private_calendar_id = getattr(private_calendar, 'private_calendar_id')
 
         db_service = DbService()
