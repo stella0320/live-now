@@ -13,8 +13,9 @@
             data-context="signin"
             data-ux_mode="redirect"
             data-login_uri="https://live-now.jc-chen.online"
+            data-nonce="123"
             data-auto_prompt="false"
-            data-auto_select="true"
+            data-use_fedcm_for_prompt="true"
             >
         </div>
 
@@ -23,13 +24,15 @@
             data-shape="pill"
             data-theme="outline"
             data-text="signin_with"
-            data-size="medium"
-            data-logo_alignment="left">
+            data-size="large"
+            data-logo_alignment="left"
+            data-use_fedcm_for_prompt="true"
+            >
         </div>
         <button class="g_id_signout" id="signout_button">Google Sign Out</button>
     </body>
 
-    <script src="https://accounts.google.com/gsi/client" async></script>
+    <script src="https://accounts.google.com/gsi/client" onload="console.log('TODO: add onload function')" async></script>
     <script src="/static/js/login.js?cache={{time}}"></script>
    
 </html>
