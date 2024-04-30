@@ -101,6 +101,11 @@ def myArtists():
 def concert(id):
     return render_template('concert.html', time=time.time(), id=id)
 
+@app.route('/google216f494416c40ce0.html')
+def read_html():
+    return render_template('google216f494416c40ce0.html')
+
+
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=3500)
