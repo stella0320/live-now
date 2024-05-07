@@ -181,6 +181,9 @@ def read_html():
     return render_template('google216f494416c40ce0.html')
 
 
+@app.route('/favicon.ico')
+def logo_icon():
+     return send_file("static/images/logo/live-now-favicon-black.png", mimetype='image/gif')
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=3500)
