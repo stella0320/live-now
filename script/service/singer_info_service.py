@@ -11,17 +11,19 @@ class SingerInfoService():
         self.__host__ = os.getenv('DB_HOST')
         self.__user__ = os.getenv('DB_USER')
         self.__password__ = os.getenv('DB_PASSWORD')
+        self.__database = os.getenv('DB_DATABASE')
 
     def __open__(self):
         try:
             self.__connect = mysql.connector.connect(
-                host=self.__host__, user=self.__user__, password=self.__password__, pool_name='mypool', pool_size=30)
+                host=self.__host__, user=self.__user__, database=self.__database,password=self.__password__, pool_name='mypool', pool_size=30)
             self.__cursor = self.__connect.cursor()
         except mysql.connector.Error as e:
             # Todo 測試
             print("Error %s" % (e))
 
     def __close__(self):
+        self.__cursor.close()
         self.__connect.close()
 
     def __commit__(self):

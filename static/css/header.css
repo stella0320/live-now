@@ -79,13 +79,28 @@ body, html {
     display: flex;
     flex: none;
     padding: 10px;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.header-function-tab-item-txt::after {
+    display:block;
+    content: '';
+    border-bottom: solid 4px rgb(255, 153, 51);  
+    transform: scaleX(0);  
+    transition: transform 500ms ease-in-out;
+}
+
+.header-function-tab-item-txt:hover::after { 
+    transform: scaleX(1); 
+    transform-origin: bottom left;
 }
 
 .header-function-logout {
     flex: none;
     width: 50px;
     height: 10px;
-    background-color: blueviolet;
+    background-color: rgb(255, 153, 51);
 }
 
 

@@ -41,6 +41,10 @@ function generateLoveIcon(timeData) {
         let concertDateTimeEventId = this.getAttribute("data-id");
         path.classList.toggle('svg-icon');
         const memberToken = localStorage.getItem('memberToken')
+        if (!!!memberToken) {
+            loginModal.style.display = 'block';
+            return;
+        }
         changeModalLoadingDisplay('block');
         fetch('/api/myCalendar/toggleConcertEventToPrivateCalendar?member_token=' + memberToken + '&concert_time_table_id=' + concertDateTimeEventId)
         .then((response) => {
@@ -52,7 +56,6 @@ function generateLoveIcon(timeData) {
             queryConcertTimeDataByTimePeriod(startDate, endDate, !!isMyCalendar)
             
         }).finally((response) => {
-            
             changeModalLoadingDisplay('none');
         })
     });
@@ -265,7 +268,6 @@ function initConcertTimeClick() {
         checkbox.addEventListener('click', function(e) {
             var id = this.getAttribute("data-id");
             console.log(id);
-
         });
     }
 }

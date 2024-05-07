@@ -23,6 +23,7 @@ class MembersService(object):
         if member_id:
             member = self.__session__.query(Members).filter_by(
                 member_id=member_id).first()
+            self.__session__.close()
             return member
 
     def insert_member(self, member_obj):
@@ -67,3 +68,10 @@ class MembersService(object):
                 self.__session__.close()
 
         return member
+
+    def find_member_by_member_mail(self, member_mail):
+        if member_mail:
+            member = self.__session__.query(Members).filter_by(
+                member_mail=member_mail).first()
+            self.__session__.close()
+            return member

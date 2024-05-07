@@ -23,8 +23,8 @@ app.register_blueprint(line_api_route)
 app.register_blueprint(singer_info_route)
 
 
-@app.route('/', methods=['GET', 'POST'])
-def index():
+@app.route('/special/login', methods=['GET', 'POST'])
+def special_login():
     member_token = None
     #### Line#####
     code = request.args.get("code", "")
@@ -71,6 +71,81 @@ def index():
     # 身分驗證
     return render_template('index.html', time=time.time())
 
+@app.route('/api/user/auth', methods = ['PUT'])
+def userAuth():
+    form = request.get_json()
+    mail = form['mail']
+    password = form['password']
+
+    if not mail:
+        return jsonify(error=True, message="登入失敗，需要填寫信箱"), 400
+    
+    if not password:
+        return jsonify(error=True, message="登入失敗，需要填寫密碼"), 400
+
+    members_service = MembersService()
+    member = members_service.find_member_by_member_mail(member_mail=mail)
+
+    if member:
+        member_password_db = getattr(member, 'member_password')
+        if member_password_db != password:
+            return jsonify(error=True, message="登入失敗，密碼錯誤"), 400
+        
+        login_handler = LoginHandler()
+        member_id = getattr(member, 'member_id')
+        member_token = login_handler.encode_user_token(member_id, mail)
+        return {
+            'memberToken' : member_token
+        }
+    
+    return jsonify(error=True, message="登入失敗，請先註冊信箱"), 400
+
+@app.route("/api/user", methods = ['POST'])
+def registrateNewUser():
+    try:
+        data = request.get_json()
+        name = data['name']
+        mail = data['mail']
+        userPassword = data['password']
+        if not name:
+            return jsonify(error=True, message="註冊失敗，需要填寫姓名"), 400
+        elif (len(name) > 50):
+            return  jsonify(error=True, message="註冊失敗，姓名長度不能超過50個字"), 400
+
+        if not mail:
+            return jsonify(error=True, message="註冊失敗，需要填寫信箱"), 400
+        elif (len(mail) > 50):
+            return jsonify(error=True, message="註冊失敗，信箱長度不能超過50個字"), 400
+
+        if not userPassword:
+            return jsonify(error=True, message="註冊失敗，需要填寫密碼"), 400
+        elif (len(userPassword) > 30):
+            return jsonify(error=True, message="註冊失敗，密碼長度不能超過30個字"), 400
+
+        members_service = MembersService()
+        member = members_service.find_member_by_member_mail(mail)
+        if not member:
+            members_create_service = MembersService()
+            
+            member_info = {
+                'member_mail': mail,
+                'member_password':userPassword,
+                'member_google_display_name': name
+            }
+
+            member_service = MembersService()
+            member = member_service.create_or_update_member(member_info)
+        else:
+            return jsonify(error=True, message="註冊失敗，Email已經註冊帳戶"), 400
+    except Exception as e:
+        app.logger.error(str(e), exc_info=True)
+        return jsonify(error=True, message=str(e)), 
+    return "註冊成功，請登入系統";
+
+
+@app.route('/', methods=['GET'])
+def index():
+    return render_template('index.html', time=time.time())
 
 @app.route('/api/searchUserInfo')
 def searchUserInfo():

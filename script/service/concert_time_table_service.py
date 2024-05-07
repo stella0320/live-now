@@ -9,17 +9,19 @@ class ConcertTimeTableService(object):
         self.__host__ = os.getenv('DB_HOST')
         self.__user__ = os.getenv('DB_USER')
         self.__password__ = os.getenv('DB_PASSWORD')
+        self.__database = os.getenv('DB_DATABASE')
 
     def __open__(self):
         try:
             self.__connect = mysql.connector.connect(
-                host=self.__host__, user=self.__user__, password=self.__password__, pool_name='mypool', pool_size=30)
+                host=self.__host__, user=self.__user__, database=self.__database, password=self.__password__, pool_name='mypool', pool_size=30)
             self.__cursor = self.__connect.cursor()
         except mysql.connector.Error as e:
             # Todo 測試
             print("Error %s" % (e))
 
     def __close__(self):
+        self.__cursor.close()
         self.__connect.close()
 
     def __commit__(self):
@@ -36,6 +38,26 @@ class ConcertTimeTableService(object):
         self.__open__()
         self.__cursor.execute(
             concert_info_sql, (concert_info_id, concert_time_table_type, private_calendar_id, ))
+        result = self.__cursor.fetchall()
+        self.__close__()
+        if result and len(result) > 0:
+            list = [dict(zip(self.__cursor.column_names, row))
+                    for row in result]
+            for row in list:
+                if row.get('concert_time_table_datetime'):
+                    self.date_format(row)
+            return list
+
+        return None
+    
+    def query_concert_time_table_by_id_and_type(self, concert_info_id, concert_time_table_type):
+
+        concert_info_sql = "select * from live_now.concert_time_table where concert_info_id = %s and concert_time_table_type = %s "
+        concert_info_sql += " order by concert_time_table_datetime asc"
+
+        self.__open__()
+        self.__cursor.execute(
+            concert_info_sql, (concert_info_id, concert_time_table_type, ))
         result = self.__cursor.fetchall()
         self.__close__()
         if result and len(result) > 0:

@@ -1,17 +1,48 @@
 const memberToken = localStorage.getItem('memberToken');
 const newMemberToken = document.getElementById('memberToken').value
+
 if (memberToken) {
     searchUserInfo(memberToken)
+    indexLogOutView()
 } else {
     if (!!newMemberToken) {
         localStorage.setItem('memberToken', newMemberToken) 
         searchUserInfo(newMemberToken)
+        indexLogOutView()
     } else {
-        window.location = '/login'
+        indexLoginBtn();
+        indexLoginView();
     }
 }
 
+function indexLoginView() {
+    let indexLogOutBtn = document.getElementById('indexLogOutBtn');
+    indexLogOutBtn.style.display = 'none';
+    let indexLogInBtn = document.getElementById('indexLoginBtn');
+    indexLogInBtn.style.display = 'display';
+}
 
+function indexLogOutView() {
+    let indexLogOutBtn = document.getElementById('indexLogOutBtn');
+    indexLogOutBtn.style.display = 'display';
+    let indexLogInBtn = document.getElementById('indexLoginBtn');
+    indexLogInBtn.style.display = 'none';
+}
+
+function indexLoginBtn() {
+    document.getElementById('indexLoginBtn').addEventListener('click', function() {
+        loginModal.style.display = 'block';
+        
+    })
+}
+
+function indexLogoutBtn() {
+    document.getElementById('indexLogOutBtn').addEventListener('click', function() {
+        localStorage.removeItem('memberToken');
+        window.location = '/'
+        return;
+    });
+}
 
 function searchUserInfo(memberToken) {
     fetch('/api/searchUserInfo', {
@@ -46,7 +77,7 @@ document.getElementById('liveNowCalendar').addEventListener('click', function() 
         // 驗證token
         window.location = '/'
     } else {
-        window.location = '/login'
+        // window.location = '/login'
     }
 });
 
@@ -56,16 +87,18 @@ document.getElementById('myCalendar').addEventListener('click', function() {
         // 驗證token
         window.location = '/myCalendar'
     } else {
-        window.location = '/login'
+        loginModal.style.display = 'block';
     }
 });
 
-document.getElementById('myArtists').addEventListener('click', function() {
-    const memberToken = localStorage.getItem('memberToken');
-    if (memberToken) {
-        // 驗證token
-        window.location = '/myArtists'
-    } else {
-        window.location = '/login'
-    }
-});
+// document.getElementById('myArtists').addEventListener('click', function() {
+//     const memberToken = localStorage.getItem('memberToken');
+//     if (memberToken) {
+//         // 驗證token
+//         window.location = '/myArtists'
+//     } else {
+//         // window.location = '/login'
+//     }
+// });
+
+indexLogoutBtn();

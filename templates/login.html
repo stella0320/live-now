@@ -1,39 +1,26 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <meta charset="utf-8" />
-        <meta name="referrer" content="no-referrer-when-downgrade">
-        <link rel="stylesheet" type="text/css" href="/static/css/login.css?cache={{time}}"/>
-        <meta http-equiv="Content-Security-Policy" content="script-src https://accounts.google.com/gsi/client" />
-    </head>
-    <body>
-        <!-- <button class="line-login-button" id="lineLoginBtn">Line Login</button> -->
-        <div id="g_id_onload"
-            data-client_id="{{google_login_client_id}}"
-            data-context="signin"
-            data-ux_mode="redirect"
-            data-login_uri="https://live-now.jc-chen.online"
-            data-native_login_uri="http://127.0.0.1:3src
-            data-use_fedcm_for_prompt="true"
-            data-itp_support="true"
-            >
-        </div>
 
-        <div class="g_id_signin"
-            data-type="icon"
-            data-shape="pill"
-            data-theme="outline"
-            data-text="signin_with"
-            data-size="medium"
-            data-logo_alignment="left"
-            data-use_fedcm_for_prompt=true
-            >
+<div class="loginModal" id="loginModal">
+    <div class="loginFrame">
+        <div class="loginBanner"></div>
+        <div class="loginContent">
+            <div class="loginTitle" id="loginTitle">登入會員帳號</div>
+            <div class="loginNameDiv" style="display: none;" id="loginNameDiv">
+                <input class="loginInputText" type="text" placeholder="輸入姓名" id="loginName" required/>
+            </div>
+            <div class="">
+                <input class="loginInputText" type="text" placeholder="輸入電子信箱" id="loginEmail" required/>
+            </div>
+            <div class="">
+                <input class="loginInputText" type="password" placeholder="輸入密碼" id="loginPassword" required/>
+            </div>
+            <div class="loginBtnDiv">
+                <div class="loginBtn" id="loginBtn" value="loginAccount" >登入帳戶</div>
+            </div>
+            <div class="loginErrorMassge" id="loginErrorMassge"></div>
+            <div class="loginMode"><a href="#" id="loginModeLink">還沒有帳戶？點此註冊</a></div>
         </div>
-        <!-- <button class="g_id_signout" id="signout_button">Google Sign Out</button> -->
-    </body>
-
-    <script src="https://accounts.google.com/gsi/client" onload="console.log('TODO: add onload function')" async></script>
-    <!-- <script src="/static/js/login.js?cache={{time}}"></script> -->
-   
-</html>
+        <div class="closeBtnDiv">
+            <div class=""><img class="closeBtnImage" src="/static/images/icon/close.png" id="closeModalBtn" /></div>
+        </div>
+    </div>
+</div>

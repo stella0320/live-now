@@ -23,15 +23,21 @@ def query_concert_info():
 
     # member info
     member_token = request.args.get('member_token')
-    login_handler = LoginHandler()
-    member_id = login_handler.get_member_id_by_decode_user_token(member_token)
+    member_id = None
+    if member_token:
+        login_handler = LoginHandler()
+        member_id = login_handler.get_member_id_by_decode_user_token(member_token)
 
-    member_private_calendar_service = MemberPrivateCalendarService()
-    private_calendar = member_private_calendar_service.find_or_create_private_calendar(
-        'myCalendar', member_id)
     private_calendar_id = None
+    private_calendar = None
+    if member_id:
+        member_private_calendar_service = MemberPrivateCalendarService()
+        private_calendar = member_private_calendar_service.find_or_create_private_calendar(
+            'myCalendar', member_id)
+    
     if private_calendar:
         private_calendar_id = getattr(private_calendar, 'private_calendar_id')
+    
     if private_calendar_id:
         sell_ticket_service = ConcertTimeTableService()
         sell_ticket_time_list = sell_ticket_service.query_concert_time_table_by_id_and_type_and_calendar_id(
@@ -41,6 +47,17 @@ def query_concert_info():
         concert_time_service = ConcertTimeTableService()
         concert_time_list = concert_time_service.query_concert_time_table_by_id_and_type_and_calendar_id(
             concert_info_id, '演出時間', private_calendar_id)
+        concert_info['concert_time_list'] = concert_time_list
+
+    else:
+        sell_ticket_service = ConcertTimeTableService()
+        sell_ticket_time_list = sell_ticket_service.query_concert_time_table_by_id_and_type(
+            concert_info_id, '售票時間',)
+        concert_info['sell_ticket_time_list'] = sell_ticket_time_list
+
+        concert_time_service = ConcertTimeTableService()
+        concert_time_list = concert_time_service.query_concert_time_table_by_id_and_type(
+            concert_info_id, '演出時間')
         concert_info['concert_time_list'] = concert_time_list
 
     return jsonify({'data': concert_info})
@@ -53,9 +70,11 @@ def queryConcertTimeDataByTimePeriod():
     endDate = request.form.get('endDate')
     isMycalendar = request.form.get('isMycalendar')
     member_token = request.form.get('memberToken')
-    login_handler = LoginHandler()
-    member_id = login_handler.get_member_id_by_decode_user_token(
-        member_token)
+    member_id = None
+    if member_token:
+        login_handler = LoginHandler()
+        member_id = login_handler.get_member_id_by_decode_user_token(
+            member_token)
 
     data = None
     if isMycalendar == 'true':
@@ -67,7 +86,7 @@ def queryConcertTimeDataByTimePeriod():
         calendar_handler = CalendarHandler()
         data = calendar_handler.query_concert_time_table(
             member_id, startDate, endDate)
-
+    
     if data:
         for item in data:
             hash_id_service = HashIdService()

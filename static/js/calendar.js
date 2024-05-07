@@ -55,7 +55,10 @@ async function queryConcertTimeDataByTimePeriod(startDate, endDate, isMycalendar
     let formData = new FormData();
     formData.append('startDate', startDate);
     formData.append('endDate', endDate);
-    formData.append('memberToken', localStorage.getItem('memberToken'));
+    const memberToken = localStorage.getItem('memberToken');
+    if (memberToken) {
+        formData.append('memberToken', localStorage.getItem('memberToken'));
+    }
     formData.append('isMycalendar', isMycalendar);
     fetch('../api/calendar/queryConcertTimeDataByTimePeriod', {
         method:'POST',
@@ -242,7 +245,11 @@ let initFullCalendar = function(isMycalendar) {
 
 async function queryConcertInfoByHashId(hashId) {
     const member_token= localStorage.getItem('memberToken')
-    fetch('/api/concert_info?concert_info_hash_id=' + hashId + "&member_token=" + member_token).then(async (response) => {
+    let params = 'concert_info_hash_id=' + hashId;
+    if(member_token) {
+        params += '&member_token=' + member_token;
+    }
+    fetch('/api/concert_info?' +  params).then(async (response) => {
         if (response.status == 200) {
             // 跳到結帳頁面
             let result = await response.json();

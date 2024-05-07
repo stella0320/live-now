@@ -23,6 +23,7 @@ class Members(Base):
     member_google_display_name = mapped_column(String(300), nullable=True)
     member_google_profile_pic_url = mapped_column(String(2083), nullable=True)
     member_google_server_id = mapped_column(String(2000), nullable=True)
+    member_password = mapped_column(String(10), nullable=True)
 
     def __repr__(self):
         return f"<members(member_id={self.member_id}, member_mail={self.member_mail})>"

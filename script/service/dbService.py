@@ -9,17 +9,18 @@ class DbService(object):
         self.__host__ = os.getenv('DB_HOST')
         self.__user__ = os.getenv('DB_USER')
         self.__password__ = os.getenv('DB_PASSWORD')
+        self.__database = os.getenv('DB_DATABASE')
 
     def __open__(self):
         try:
             self.__connect = mysql.connector.connect(
-                host=self.__host__, user=self.__user__, password=self.__password__, pool_name='mypool', pool_size=30)
+                host=self.__host__, user=self.__user__, database=self.__database, password=self.__password__, pool_name='mypool', pool_size=30)
             self.__cursor = self.__connect.cursor()
         except mysql.connector.Error as e:
-            # Todo 測試
             print("Error %s" % (e))
 
     def __close__(self):
+        self.__cursor.close()
         self.__connect.close()
 
     def __commit__(self):
@@ -45,7 +46,8 @@ class DbService(object):
         self.__cursor.execute(
             query_sql, (private_calendar_id, start_day, end_day, ))
         result = self.__cursor.fetchall()
-        self.__close__()
+       
+        self.__close__();
         if result and len(result) > 0:
             list = [dict(zip(self.__cursor.column_names, row))
                     for row in result]
@@ -53,7 +55,7 @@ class DbService(object):
 
         return None
 
-    def query_concert_time_table(self, start_day, end_day, private_calendar_id):
+    def query_concert_time_table_with_private_calendar_id(self, start_day, end_day, private_calendar_id):
         concert_info_sql = "SELECT * FROM live_now.concert_info d "
         # concert_info_sql = "SELECT e.singer_info_name, f.concert_location_name, d.* FROM live_now.concert_info d "
         # concert_info_sql += " left join live_now.singer_info e"
@@ -78,6 +80,7 @@ class DbService(object):
         self.__open__()
         self.__cursor.execute(sql, (start_day, end_day, private_calendar_id, ))
         result = self.__cursor.fetchall()
+        
         self.__close__()
         if result and len(result) > 0:
             list = [dict(zip(self.__cursor.column_names, row))
@@ -85,3 +88,30 @@ class DbService(object):
             return list
 
         return None
+
+    def query_concert_time_table(self, start_day, end_day):
+            concert_info_sql = "SELECT * FROM live_now.concert_info d "
+            concert_info_sql += " where d.concert_info_is_display = 'Y' "
+
+            sql = "select b.concert_info_name, b.concert_info_page_url, e.singer_info_name, f.concert_location_name, a.* from "
+            sql += " (select * from live_now.concert_time_table "
+            sql += " where concert_time_table_datetime between %s and %s "
+            sql += " ) a "
+            sql += " left join (" + concert_info_sql + " ) b "
+            sql += " on a.concert_info_id = b.concert_info_id "
+            sql += " left join live_now.singer_info e"
+            sql += " on b.concert_info_singer_id = e.singer_info_id"
+            sql += " left join live_now.concert_location f"
+            sql += " on b.concert_info_location_id = f.concert_location_id"
+            sql += " order by a.concert_info_id, a.concert_time_table_id "
+            self.__open__()
+            self.__cursor.execute(sql, (start_day, end_day,))
+            result = self.__cursor.fetchall()
+            
+            self.__close__()
+            if result and len(result) > 0:
+                list = [dict(zip(self.__cursor.column_names, row))
+                        for row in result]
+                return list
+
+            return None
