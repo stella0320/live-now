@@ -1,0 +1,96 @@
+:root{
+    --fc-list-event-hover-bg-color:rgba(247, 119, 6 ,0.2);
+}
+
+.concert-item-container {
+    display: flex;
+    flex: none;
+    width: 100%;
+    height: 21px;
+}
+
+.concert-item-title {
+    display: flex;
+    flex: none;
+    align-self: center;
+    width: 90%;
+}
+
+.concert-item-title-invalid {
+
+    & .fc-event-title, .concert-item-title {
+        text-decoration: line-through;
+    }
+
+    color: rgb(103, 103, 103);
+    background-color: rgba(214, 213, 213, 0.699);;
+    
+}
+
+body, .fc-content, .fc-event, .fc-list-item, .fc-daygrid-event, .fc-timegrid-event {
+    user-select: auto;
+}
+
+
+.calendar-frame {
+    display: flex;
+    justify-content: center;
+}
+
+.calendar-container {
+    display: flex;
+    flex: none;
+    width: 1200px;
+    padding-top: 10px;
+    /* height: 200px; */
+
+    @media (max-width:1200px) {
+        width: 100%;
+        /* padding: 0px 10px 0px 10px; */
+    }
+
+    @media (max-width:800px) {
+        width: 100%;
+        flex-direction: column;
+        /* padding: 0px 10px 0px 10px; */
+    }
+}
+
+.calendar-calendar-ui-container {
+    /* width: 60%; */
+    width:100%;
+    height: 100%;
+    display: flex;
+    flex: none;
+    /* background-color: aqua; */
+    padding-top: 20px;
+    justify-content: center;
+    @media (max-width:800px) {
+        width: calc(100% - 20px);
+        padding: 0px 10px;
+    }
+}
+
+.calendar-calendar-ui {
+    width:calc(100% - 20px);
+    padding: 20px 10px;
+
+}
+
+.calendar-calendar-list-container {
+    display: flex;
+    flex: none;
+    width: 40%;
+    height: 200px;
+    background-color: aquamarine;
+
+    @media (max-width:800px) {
+        width: 100%;
+    }
+}
+
+.calendar-week-number-style {
+
+    font-size: 10px;
+    color: red;
+}

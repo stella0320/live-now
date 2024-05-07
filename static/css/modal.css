@@ -1,0 +1,106 @@
+
+.live-now-modal-body {
+    display: none; /*Hidden by default */
+    position: fixed; 
+    z-index: 1000;
+    /* padding-top: 80px; Location of the box  */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    /* overflow: auto; Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    outline: 0;
+}
+
+.live-now-modal-container {
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    border: 1px  rgba(0,0,0,.2) solid;
+    border-radius: .3rem;
+    width: 800px;
+    min-height: 200px;
+    margin: auto;
+    background: var(--White, #FFF);
+    box-shadow: 0px 4px 60px 0px #ababab;
+    position: relative;
+    transform: translateY(0px);
+    opacity : 0;
+    transition: transform 0.7s, opacity 0.7s;
+    /* animation-name: modal-open; */
+    /* animation-duration: 2s; */
+
+    @media (max-width:1200px) {
+        width: 100% !important;
+    }
+}
+
+.live-now-modal-container-active {
+    transform: translateY(100px); 
+    opacity : 1;
+}
+
+.live-now-modal-header-container {
+    display: flex;
+    flex: none;
+    width: 100%;
+    min-height: 45px;
+    border-bottom: 1px solid #d5d5d597;
+    /* background-color: red; */
+}
+
+.live-now-modal-content-container {
+    display: flex;
+    flex: none;
+    width: 100%;
+    height: auto;
+    max-height: 600px;
+    overflow-y: auto;
+    position: relative;
+    /* background-color: blue */
+}
+
+.live-now-modal-footer-container {
+    display: flex;
+    flex: none;
+    width: 100%;
+    min-height: 100px;
+    /* background-color: red; */
+    border-top: 1px solid #d5d5d597;
+}
+
+.live-now-modal-close-btn-container {
+    display: flex;
+    flex: auto;
+    justify-content: flex-end;
+    top: 0;
+    right: 0;
+    padding-right: 10px;
+    position: absolute;
+}
+
+.live-now-modal-close-btn:hover {
+    cursor: pointer;
+    & span {
+        color: black;
+    }
+}
+
+.live-now-modal-close-btn {
+    background-color: transparent;
+    
+    
+}
+
+.live-now-modal-close-btn > span {
+    color: grey;
+    font-size: 30px
+}
+
+button,
+button:active,
+button:focus {
+    border: none;
+    outline: none;
+}
