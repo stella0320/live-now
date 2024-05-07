@@ -12,6 +12,7 @@ from sqlalchemy.orm import sessionmaker
 import json
 from script.db_service.member_private_calendar_service import MemberPrivateCalendarService
 from script.db_service.member_calendar_event_service import MemberCalendarEventService
+from script.service.dbService import DbService
 
 
 def session_insert_test():
@@ -87,7 +88,6 @@ def create_private_calendar_test():
 
 
 if __name__ == "__main__":
-    service = MemberCalendarEventService()
-    member_calendar_event = service.create_or_delete_member_calendar_event(
-        1, 246)
-    print(member_calendar_event)
+    service = DbService()
+    calendar_event = service.query_concert_time_table('2024-05-05', '2024-05-12')
+    print(calendar_event)
