@@ -68,7 +68,7 @@ class DbService(object):
         sql += " (select * from live_now.concert_time_table "
         sql += " where concert_time_table_datetime between %s and %s "
         sql += " ) a "
-        sql += " join (" + concert_info_sql + " ) b "
+        sql += " inner join (" + concert_info_sql + " ) b "
         sql += " on a.concert_info_id = b.concert_info_id "
         sql += " left join live_now.singer_info e"
         sql += " on b.concert_info_singer_id = e.singer_info_id"
@@ -97,7 +97,7 @@ class DbService(object):
             sql += " (select * from live_now.concert_time_table "
             sql += " where concert_time_table_datetime between %s and %s "
             sql += " ) a "
-            sql += " left join (" + concert_info_sql + " ) b "
+            sql += " inner join (" + concert_info_sql + " ) b "
             sql += " on a.concert_info_id = b.concert_info_id "
             sql += " left join live_now.singer_info e"
             sql += " on b.concert_info_singer_id = e.singer_info_id"
@@ -105,7 +105,7 @@ class DbService(object):
             sql += " on b.concert_info_location_id = f.concert_location_id"
             sql += " order by a.concert_info_id, a.concert_time_table_id "
             self.__open__()
-            self.__cursor.execute(sql, (start_day, end_day,))
+            self.__cursor.execute(sql, (start_day, end_day, ))
             result = self.__cursor.fetchall()
             
             self.__close__()
